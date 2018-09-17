@@ -1,0 +1,11 @@
+
+csquid:UnusedPrivateMethodT"7Remove this unused private "getScoreListSecond" method.(×»óƒ8¹ëûçİ,
+esquid:UnusedPrivateMethodp"4Remove this unused private "getListToDouble" method.(‡²Ÿúÿÿÿÿ8¹ëûçİ,
+nsquid:CommentedOutCodeLine("<This block of commented-out lines of code should be removed.(®–æøüÿÿÿÿ8Âá©éİ,
+psquid:S00117-"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§áúÖ8©‘€èİ,
+qsquid:UselessImportCheck"ARemove this unused import 'java.util.concurrent.RecursiveAction'.( Ú¼ıÿÿÿÿÿ8º¢İÕİ,
+]squid:UnusedPrivateMethodH"1Remove this unused private "getScoreList" method.(Ñ»‘€8¹ëûçİ,
+Wsquid:UnusedPrivateMethod-"+Remove this unused private "saveN2" method.(§áúÖ8Âá©éİ,
+dsquid:UnusedPrivateMethod^"3Remove this unused private "getListToArray" method.(ÇÛà™øÿÿÿÿ8¹ëûçİ,
+psquid:S00117-"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§áúÖ8©‘€èİ,
+]squid:UnusedPrivateMethod‡"+Remove this unused private "getSSB" method.( ‡Çıüÿÿÿÿ8Âá©éİ,
