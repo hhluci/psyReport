@@ -1,16 +1,17 @@
 
-esquid:UselessImportCheck":Remove this unused import 'com.sun.deploy.util.ArrayUtil'.(°ã‹8ª¡ÍĞİ,
-vsquid:S00117„"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»¤à»üÿÿÿÿ8ş•€Ñİ,
-qsquid:S00117‘"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(öä™Ç8Ó‹—Òİ,
-nsquid:CommentedOutCodeLine'"<This block of commented-out lines of code should be removed.(ÌğÎĞüÿÿÿÿ8™ò¡ãİ,
-]squid:UselessImportCheck"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8ª¡ÍĞİ,
-qsquid:S00117‡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(›ìºı8İ¶…Ñİ,
-Ssquid:S1191"5Use classes from the Java API instead of Sun classes.(°ã‹8ª¡ÍĞİ,
+_squid:UnusedPrivateMethodÎ"2Remove this unused private "getanxExamIdx" method.(Œåş­8³´Òİ,
 [
 squid:S106%"9Replace this use of System.out or System.err by a logger.(Î¤Ñ†şÿÿÿÿ8ûñíâİ,
-Zsquid:UselessImportCheck"/Remove this unused import 'java.util.Iterator'.(¥ÍòÕ8ª¡ÍĞİ,
-vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ù£ØÆùÿÿÿÿ8Ó‹—Òİ,
-_squid:UnusedPrivateMethodÎ"2Remove this unused private "getanxExamIdx" method.(Œåş­8³´Òİ,
 ]squid:UnusedPrivateMethodœ"0Remove this unused private "getbehavIdx" method.(‰°ÃÚ8‰§±Òİ,
+Ssquid:S1191"5Use classes from the Java API instead of Sun classes.(°ã‹8ª¡ÍĞİ,
+qsquid:S00117‡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(›ìºı8İ¶…Ñİ,
+Zsquid:UselessImportCheck"/Remove this unused import 'java.util.Iterator'.(¥ÍòÕ8ª¡ÍĞİ,
+vsquid:S00117„"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»¤à»üÿÿÿÿ8ş•€Ñİ,
+nsquid:CommentedOutCodeLine'"<This block of commented-out lines of code should be removed.(ÌğÎĞüÿÿÿÿ8™ò¡ãİ,
+]squid:UselessImportCheck"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8ª¡ÍĞİ,
 ksquid:UselessImportCheck"@Remove this unused import 'org.apache.commons.lang3.ArrayUtils'.(ªğô†8ª¡ÍĞİ,
+vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ù£ØÆùÿÿÿÿ8Ó‹—Òİ,
+isquid:CommentedOutCodeLine+"<This block of commented-out lines of code should be removed.(Úì8ÖÌéªŞ,
 vsquid:S00117‰"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èÃ“õÿÿÿÿÿ8İÑÒİ,
+esquid:UselessImportCheck":Remove this unused import 'com.sun.deploy.util.ArrayUtil'.(°ã‹8ª¡ÍĞİ,
+qsquid:S00117‘"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(öä™Ç8Ó‹—Òİ,

@@ -8,6 +8,7 @@ import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -62,41 +63,41 @@ public class FirstService {
                 //作答缺失
                 .set("missRate", "0%")
                 //效度分数
-                .set("idxL", String.valueOf(subdimension.getL(this.getScoreList(findAllScore, "30101"))))
-                .set("idxF", String.valueOf(subdimension.getF(this.getScoreList(findAllScore, "30103"))))
-                .set("idxC", String.valueOf(subdimension.getC(this.getScoreList(findAllScore, "30102"), this.getCScoreList(findAllScore))))
+                .set("idxL", new DecimalFormat("0.00").format(subdimension.getL(this.getScoreList(findAllScore, "30101"))))
+                .set("idxF", new DecimalFormat("0.00").format(subdimension.getF(this.getScoreList(findAllScore, "30103"))))
+                .set("idxC", new DecimalFormat("0.00").format(subdimension.getC(this.getScoreList(findAllScore, "30102"), this.getCScoreList(findAllScore))))
                 //情绪子维度分数
-                .set("anxiety", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10101"))))
-                .set("depression", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10102"))))
-                .set("uncontroll", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10104"))))
-                .set("fail", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10105"))))
-                .set("somatization", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10103"))))
-                .set("oddBehav", String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10106"))))
+                .set("anxiety", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10101"))))
+                .set("depression", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10102"))))
+                .set("uncontroll", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10104"))))
+                .set("fail", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10105"))))
+                .set("somatization", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10103"))))
+                .set("oddBehav", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10106"))))
                 /*情绪维度*/
-                .set("emotion",String.valueOf(subdimension.getAverage(this.getListToArray(allList, "10100"))))
+                .set("emotion",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10100"))))
                 //人际问题子维度
-                .set("socialPress",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10201"))))
-                .set("degenerate",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10202"))))
-                .set("bully",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10203"))))
+                .set("socialPress",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10201"))))
+                .set("degenerate",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10202"))))
+                .set("bully",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10203"))))
                 /*人际问题维度*/
-                .set("Interpersonal",String.valueOf(subdimension.getAverage(this.getListToArray(allList, "10200"))))
+                .set("Interpersonal",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10200"))))
                 //注意力问题子维度
-                .set("inattention",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10301"))))
-                .set("mania",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10302"))))
+                .set("inattention",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10301"))))
+                .set("mania",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10302"))))
                 /*注意力维度*/
-                .set("attention",String.valueOf(subdimension.getAverage(this.getListToArray(allList, "10300"))))
+                .set("attention",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10300"))))
                 //成瘾问题子维度
-                .set("netAddiction",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10401"))))
-                .set("phoneAddiction",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10402"))))
+                .set("netAddiction",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10401"))))
+                .set("phoneAddiction",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10402"))))
                 /*成瘾问题维度*/
-                .set("addiction",String.valueOf(subdimension.getAverage(this.getListToArray(allList, "10400"))))
+                .set("addiction",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10400"))))
                 //厌学状况子维度
-                .set("hateSchool",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10501"))))
-                .set("hateTeacher",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10502"))))
-                .set("hateStudy",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10503"))))
-                .set("anxExam",String.valueOf(subdimension.primitiveScore(this.getScoreList(allList, "10504"))))
+                .set("hateSchool",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10501"))))
+                .set("hateTeacher",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10502"))))
+                .set("hateStudy",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10503"))))
+                .set("anxExam",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10504"))))
                 /*厌学问题维度*/
-                .set("Weariness",String.valueOf(subdimension.getAverage(this.getListToArray(allList, "10500"))));
+                .set("Weariness",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10500"))));
 
         /* --------------------------------- 添加写入数据库信息 end --------------------------------- */
         return dao.save(recordFirstPart);
@@ -147,40 +148,40 @@ public class FirstService {
         double[] conflictIdx = subdimension.getT(this.getconflictIdx(hateTeacher));
         for (int i = 0; i < listId.size(); i++){
             updateRecord.set("id", listId.get(i).getInt("id"))
-                    .set("anxiety", anxiety[i])
-                    .set("depression", depression[i])
-                    .set("uncontroll", uncontroll[i])
-                    .set("fail", fail[i])
-                    .set("somatization", somatization[i])
-                    .set("oddBehav", oddBehav[i])
-                    .set("socialPress", socialPress[i])
-                    .set("degenerate", degenerate[i])
-                    .set("bully", bully[i])
-                    .set("inattention", inattention[i])
-                    .set("mania", mania[i])
-                    .set("netAddiction", netAddiction[i])
-                    .set("phoneAddiction", phoneAddiction[i])
-                    .set("hateSchool", hateSchool[i])
-                    .set("hateTeacher", hateTeacher[i])
-                    .set("hateStudy", hateStudy[i])
-                    .set("anxExam", anxExam[i])
-                    .set("emotion", emotion[i])
-                    .set("Interpersonal", Interpersonal[i])
-                    .set("attention", attention[i])
-                    .set("addiction", addiction[i])
-                    .set("Weariness", Weariness[i])
-                    .set("autolesionIdx", autolesionIdx[i])
-                    .set("HelplessnessIdx", HelplessnessIdx[i])
-                    .set("interpersonalIdx", interpersonalIdx[i])
-                    .set("addictionIdx", addictionIdx[i])
-                    .set("bullyIdx", bullyIdx[i])
-                    .set("behavIdx", behavIdx[i])
-                    .set("maniaIdx", maniaIdx[i])
-                    .set("poorHealthIdx", poorHealthIdx[i])
-                    .set("WearinessIdx", WearinessIdx[i])
-                    .set("DistractionIdx", DistractionIdx[i])
-                    .set("anxExamIdx", anxExamIdx[i])
-                    .set("conflictIdx", conflictIdx[i]);
+                    .set("anxiety", new DecimalFormat("0.00").format(anxiety[i]))
+                    .set("depression", new DecimalFormat("0.00").format(depression[i]))
+                    .set("uncontroll", new DecimalFormat("0.00").format(uncontroll[i]))
+                    .set("fail", new DecimalFormat("0.00").format(fail[i]))
+                    .set("somatization", new DecimalFormat("0.00").format(somatization[i]))
+                    .set("oddBehav", new DecimalFormat("0.00").format(oddBehav[i]))
+                    .set("socialPress", new DecimalFormat("0.00").format(socialPress[i]))
+                    .set("degenerate", new DecimalFormat("0.00").format(degenerate[i]))
+                    .set("bully", new DecimalFormat("0.00").format(bully[i]))
+                    .set("inattention", new DecimalFormat("0.00").format(inattention[i]))
+                    .set("mania", new DecimalFormat("0.00").format(mania[i]))
+                    .set("netAddiction", new DecimalFormat("0.00").format(netAddiction[i]))
+                    .set("phoneAddiction", new DecimalFormat("0.00").format(phoneAddiction[i]))
+                    .set("hateSchool", new DecimalFormat("0.00").format(hateSchool[i]))
+                    .set("hateTeacher", new DecimalFormat("0.00").format(hateTeacher[i]))
+                    .set("hateStudy", new DecimalFormat("0.00").format(hateStudy[i]))
+                    .set("anxExam", new DecimalFormat("0.00").format(anxExam[i]))
+                    .set("emotion", new DecimalFormat("0.00").format(emotion[i]))
+                    .set("Interpersonal", new DecimalFormat("0.00").format(Interpersonal[i]))
+                    .set("attention", new DecimalFormat("0.00").format(attention[i]))
+                    .set("addiction", new DecimalFormat("0.00").format(addiction[i]))
+                    .set("Weariness", new DecimalFormat("0.00").format(Weariness[i]))
+                    .set("autolesionIdx", new DecimalFormat("0.00").format(autolesionIdx[i]))
+                    .set("HelplessnessIdx", new DecimalFormat("0.00").format(HelplessnessIdx[i]))
+                    .set("interpersonalIdx", new DecimalFormat("0.00").format(interpersonalIdx[i]))
+                    .set("addictionIdx", new DecimalFormat("0.00").format(addictionIdx[i]))
+                    .set("bullyIdx", new DecimalFormat("0.00").format(bullyIdx[i]))
+                    .set("behavIdx", new DecimalFormat("0.00").format(behavIdx[i]))
+                    .set("maniaIdx", new DecimalFormat("0.00").format(maniaIdx[i]))
+                    .set("poorHealthIdx", new DecimalFormat("0.00").format(poorHealthIdx[i]))
+                    .set("WearinessIdx", new DecimalFormat("0.00").format(WearinessIdx[i]))
+                    .set("DistractionIdx", new DecimalFormat("0.00").format(DistractionIdx[i]))
+                    .set("anxExamIdx", new DecimalFormat("0.00").format(anxExamIdx[i]))
+                    .set("conflictIdx", new DecimalFormat("0.00").format(conflictIdx[i]));
             dao.update("tbproblembehavrep", "id", updateRecord);
         }
     }

@@ -1,19 +1,19 @@
 
-Psquid:S1612™",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8‡»¬×İ,
-zsquid:UselessImportCheck"JRemove this unused import 'com.sun.org.apache.regexp.internal.RECompiler'.(‹±®Íıÿÿÿÿ8İÃÀğÜ,
 Gsquid:S1148Å"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8•°ìÏİ,
-Psquid:S1612™",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8‡»¬×İ,
+Psquid:S1612œ",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8Ñ®Ç¯Ş,
 \"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(¨àü¿ùÿÿÿÿ8Å™®ÈÜ,
-qsquid:S00117¨"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îÑ8šœŞÙİ,
-Xsquid:S2864Ü"4Iterate over the "entrySet" instead of the "keySet".(®Çó¨ùÿÿÿÿ8ó®òÖİ,
-qsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ò”Ù8Å™®ÈÜ,
+zsquid:UselessImportCheck"JRemove this unused import 'com.sun.org.apache.regexp.internal.RECompiler'.(‹±®Íıÿÿÿÿ8İÃÀğÜ,
 Xsquid:S1191"5Use classes from the Java API instead of Sun classes.(‹±®Íıÿÿÿÿ8£ÚÏİ,
-qsquid:S00117è"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾Œ“Í8ª‰ÙÈİ,
-isquid:S3027“"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(Ì½ıá8Å™®ÈÜ,
 asquid:S1155K">Use isEmpty() to check whether the collection is empty or not.(´óãƒøÿÿÿÿ8ˆÜ÷Ëİ,
+vsquid:S00117§"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤Äñºşÿÿÿÿ8šœŞÙİ,
+Psquid:S1612œ",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8Ñ®Ç¯Ş,
 W
 squid:S106ü"9Replace this use of System.out or System.err by a logger.(é“³½8ª‰ÙÈİ,
-~squid:S1488”"_Immediately return this expression instead of assigning it to the temporary variable "listMap".(â·ÇÄ8‡»¬×İ,
 isquid:S3027”"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(ãÉÖú8Å™®ÈÜ,
 X"squid:SwitchLastCaseIsDefaultCheck•""Add a default case to this switch.(ò˜•8Å™®ÈÜ,
-vsquid:S00117§"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤Äñºşÿÿÿÿ8šœŞÙİ,
+isquid:S3027“"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(Ì½ıá8Å™®ÈÜ,
+qsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ò”Ù8Å™®ÈÜ,
+qsquid:S00117è"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾Œ“Í8ª‰ÙÈİ,
+Xsquid:S2864ß"4Iterate over the "entrySet" instead of the "keySet".(®Çó¨ùÿÿÿÿ8Ñ®Ç¯Ş,
+qsquid:S00117¨"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îÑ8šœŞÙİ,
+~squid:S1488—"_Immediately return this expression instead of assigning it to the temporary variable "listMap".(â·ÇÄ8Ñ®Ç¯Ş,
