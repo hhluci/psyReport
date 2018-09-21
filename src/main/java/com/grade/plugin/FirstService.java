@@ -263,8 +263,8 @@ public class FirstService {
                     .set("DistractionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("DistractionIdx") - ave_DistractionIdx) / s_DistractionIdx * 10 + 50))
                     .set("anxExamIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExamIdx") - ave_anxExamIdx) / s_anxExamIdx * 10 + 50))
                     .set("conflictIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("conflictIdx") - ave_conflictIdx) / s_conflictIdx * 10 + 50));
-            //dao.save(score);
-            System.out.println(score);
+            dao.save(score);
+            //System.out.println(score);
 
 
             /* System.out.println((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50);

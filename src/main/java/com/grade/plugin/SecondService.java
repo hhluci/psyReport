@@ -338,8 +338,8 @@ public class SecondService {
                     .set("distriOfAttenT", new DecimalFormat("0.00").format((n2.get(key).getDouble("distriOfAttenT") - ave_distriOfAttenT) / s_distriOfAttenT * 10 + 50))
                     .set("cognitiveChangeT", new DecimalFormat("0.00").format((n2.get(key).getDouble("cognitiveChangeT") - ave_cognitiveChangeT) / s_cognitiveChangeT * 10 + 50))
                     .set("responseModT", new DecimalFormat("0.00").format((n2.get(key).getDouble("responseModT") - ave_responseModT) / s_responseModT * 10 + 50));
-            //dao.saveSecond(score);
-            System.out.println(score);
+            dao.saveSecond(score);
+            //System.out.println(score);
         }
 
     }
