@@ -1,7 +1,6 @@
 package com.grade.plugin;
 
 import com.jfinal.plugin.activerecord.Record;
-import com.sun.org.apache.regexp.internal.RECompiler;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.MathIllegalArgumentException;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
@@ -9,7 +8,10 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.summary.SumOfSquares;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

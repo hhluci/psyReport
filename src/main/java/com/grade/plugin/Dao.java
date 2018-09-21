@@ -17,9 +17,10 @@ import java.util.List;
 public class Dao {
 
     DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/bank?characterEncoding=utf8&useSSL=false", "root", "root");
-    ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(druidPlugin);
 
-    public Dao() {
+
+    public Dao(String configName) {
+        ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(configName, druidPlugin);
         druidPlugin.start();
         activeRecordPlugin.start();
     }

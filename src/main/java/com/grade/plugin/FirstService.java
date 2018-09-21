@@ -1,7 +1,6 @@
 package com.grade.plugin;
 
 import com.jfinal.plugin.activerecord.Record;
-import com.sun.deploy.util.ArrayUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
@@ -9,195 +8,275 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @Author: yang
  * @ProjectName: grade
  * @Package: com.grade.plugin
- * @Description: 成绩综合
- * @Date: Created in 18:41 2018/9/13
+ * @Description:
+ * @Date: Created in 9:00 2018/9/20
  */
 public class FirstService {
+    private Dao dao = new Dao("first");
+    private Subdimension subdimension = new Subdimension();
 
-    Dao dao = new Dao();
-    final Subdimension subdimension = new Subdimension();
-
-    /**
-     * 计算维度分数
-     * @param schoolId
-     * @param gradeId
-     * @param classId
-     * @return
-     */
     public void firstPart(String schoolId, String gradeId, String classId){
-        List<Record> stuIdList = dao.find(SQL.findStuId(schoolId, gradeId, classId));
-        System.out.println(stuIdList);
-        for (Record record : stuIdList){
-            //System.out.println(dao.find(SQL.findGroupbyPart(schoolId, gradeId, classId, record.getStr("stuId"))));
-            if (this.save(dao.find(SQL.findFirstAll(schoolId, gradeId, classId, record.getStr("stuId"))),
-                    dao.find(SQL.findGroupbyPart(schoolId, gradeId, classId, record.getStr("stuId"))),
-                    dao.find(SQL.findAll(schoolId, gradeId, classId, record.getStr("stuId"))))){
-                //this.secondPart(schoolId, gradeId, classId);
-            }
+        /*获取该班级下所有学生id*/
+        List<Record> stuId = dao.find(SQL.findStuId(schoolId, gradeId, classId));
+        /*中间结果集*/
+        Map<String, Record> temp = new HashMap<>();
+        /*最终结果*/
+        Record score ;
+        for (Record id : stuId){
+            Record result = new Record();
+            List<Record> allList = dao.find(SQL.findFirstAll(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> testTime = dao.find(SQL.findTestTime(schoolId, gradeId, classId, id.getStr("stuId")));
+
+            result.set("schoolId", schoolId)
+                    .set("gradeId", gradeId)
+                    .set("classId", classId)
+                    .set("stuId", id.getStr("stuId"))
+                    //问题行为交卷时间
+                    .set("testDate", testTime.get(1).getStr("submitTime"))
+                    //作答时间
+                    .set("elapsedTime", this.getTestTime(testTime.get(0).getStr("startTime"), testTime.get(testTime.size()-1).getStr("submitTime")))
+                    //作答缺失
+                    .set("missRate", "0%")
+                    //效度分数
+                    .set("idxL", new DecimalFormat("0.00").format(subdimension.getL(this.getScoreList(allList, "30101"))))
+                    .set("idxF", new DecimalFormat("0.00").format(subdimension.getF(this.getScoreList(allList, "30103"))))
+                    .set("idxC", new DecimalFormat("0.00").format(subdimension.getC(this.getScoreList(allList, "30102"), this.getCScoreList(allList))))
+                    //情绪子维度分数
+                    .set("anxiety", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10101")))))
+                    .set("depression", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10102")))))
+                    .set("uncontroll", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10104")))))
+                    .set("fail", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10105")))))
+                    .set("somatization", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10103")))))
+                    .set("oddBehav", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10106")))))
+                    /*情绪维度*/
+                    .set("emotion", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10100")))))
+                    //人际问题子维度
+                    .set("socialPress", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10201")))))
+                    .set("degenerate", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10202")))))
+                    .set("bully", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10203")))))
+                    /*人际问题维度*/
+                    .set("Interpersonal", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10200")))))
+                    //注意力问题子维度
+                    .set("inattention", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10301")))))
+                    .set("mania", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10302")))))
+                    /*注意力维度*/
+                    .set("attention", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10300")))))
+                    //成瘾问题子维度
+                    .set("netAddiction", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10401")))))
+                    .set("phoneAddiction", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10402")))))
+                    /*成瘾问题维度*/
+                    .set("addiction", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10400")))))
+                    //厌学状况子维度
+                    .set("hateSchool", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10501")))))
+                    .set("hateTeacher", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10502")))))
+                    .set("hateStudy", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10503")))))
+                    .set("anxExam", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10504")))))
+                    /*厌学问题维度*/
+                    .set("Weariness", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10500")))))
+                    /*自伤指数*/
+                    .set("autolesionIdx", (Double.parseDouble(result.getStr("anxiety")) + Double.parseDouble(result.getStr("depression")) + Double.parseDouble(result.getStr("somatization"))) / 3)
+                    /*无助感指数*/
+                    .set("HelplessnessIdx", (Double.parseDouble(result.getStr("uncontroll")) + Double.parseDouble(result.getStr("fail"))) / 2)
+                    /*人际障碍指数*/
+                    .set("interpersonalIdx", (Double.parseDouble(result.getStr("socialPress")) + Double.parseDouble(result.getStr("degenerate"))) / 2)
+                    /*成瘾指数*/
+                    .set("addictionIdx", (Double.parseDouble(result.getStr("netAddiction")) + Double.parseDouble(result.getStr("phoneAddiction"))) / 2)
+                    /*受欺负指数*/
+                    .set("bullyIdx", Double.parseDouble(result.getStr("bully")))
+                    /*行为指数*/
+                    .set("behavIdx", Double.parseDouble(result.getStr("oddBehav")))
+                    /*狂躁指数*/
+                    .set("maniaIdx", Double.parseDouble(result.getStr("mania")))
+                    /*身体不适指数*/
+                    .set("poorHealthIdx", Double.parseDouble(result.getStr("somatization")))
+                    /*厌学指数*/
+                    .set("WearinessIdx", (Double.parseDouble(result.getStr("hateSchool")) + Double.parseDouble(result.getStr("hateStudy"))) / 2)
+                    /*分心指数*/
+                    .set("DistractionIdx", Double.parseDouble(result.getStr("inattention")))
+                    /*考试焦虑指数*/
+                    .set("anxExamIdx", Double.parseDouble(result.getStr("anxExam")))
+                    /*师生冲突指数*/
+                    .set("conflictIdx", Double.parseDouble(result.getStr("hateTeacher")));
+                    temp.put(id.getStr("stuId"), result);
+        }
+        //System.out.println(temp);
+        /*情绪问题维度*/
+        double ave_emo = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("emotion")));
+        double s_emo = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("emotion")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+        /*人际问题维度*/
+        double ave_Inter = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("Interpersonal")));
+        double s_Inter = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("Interpersonal")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+        /*注意力问题维度*/
+        double ave_atten = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("attention")));
+        double s_atten = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("attention")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+        /*成瘾问题维度*/
+        double ave_addict = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("addiction")));
+        double s_addict = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("addiction")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+        /*厌学状况维度*/
+        double ave_Wear = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("Weariness")));
+        double s_Wear = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("Weariness")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        /*子维度*/
+        double ave_anxiety = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("anxiety")));
+        double s_anxiety = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("anxiety")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_depression = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("depression")));
+        double s_depression =subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("depression")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_uncontroll = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("uncontroll")));
+        double s_uncontroll =subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("uncontroll")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_fail = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("fail")));
+        double s_fail = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("fail")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_somatization = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("somatization")));
+        double s_somatization = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("somatization")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_oddBehav = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("oddBehav")));
+        double s_oddBehav = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("oddBehav")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_socialPress = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("socialPress")));
+        double s_socialPress = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("socialPress")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_degenerate = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("degenerate")));
+        double s_degenerate = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("degenerate")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_bully = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("bully")));
+        double s_bully = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("bully")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_inattention =temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("inattention")));
+        double s_inattention = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("inattention")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_mania = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("mania")));
+        double s_mania = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("mania")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_netAddiction = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("netAddiction")));
+        double s_netAddiction = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("netAddiction")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_phoneAddiction = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("phoneAddiction")));
+        double s_phoneAddiction = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("phoneAddiction")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_hateSchool = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("hateSchool")));
+        double s_hateSchool = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("hateSchool")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_hateTeacher = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("hateTeacher")));
+        double s_hateTeacher = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("hateTeacher")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_hateStudy = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("hateStudy")));
+        double s_hateStudy = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("hateStudy")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_anxExam = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("anxExam")));
+        double s_anxExam = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("anxExam")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        /*指数*/
+        double ave_autolesionIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("autolesionIdx")));
+        double s_autolesionIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("autolesionIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_HelplessnessIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("HelplessnessIdx")));
+        double s_HelplessnessIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("HelplessnessIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_interpersonalIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("interpersonalIdx")));
+        double s_interpersonalIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("interpersonalIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_bullyIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("bullyIdx")));
+        double s_bullyIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("bullyIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_addictionIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("addictionIdx")));
+        double s_addictionIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("addictionIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_behavIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("behavIdx")));
+        double s_behavIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("behavIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_maniaIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("maniaIdx")));
+        double s_maniaIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("maniaIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_poorHealthIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("poorHealthIdx")));
+        double s_poorHealthIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("poorHealthIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_WearinessIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("WearinessIdx")));
+        double s_WearinessIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("WearinessIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_DistractionIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("DistractionIdx")));
+        double s_DistractionIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("DistractionIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_anxExamIdx = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("anxExamIdx")));
+        double s_anxExamIdx = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("anxExamIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        double ave_conflictIdx =temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("conflictIdx")));
+        double s_conflictIdx =subdimension.getStandardDeviation(ArrayUtils.toPrimitive(temp.values().stream().map(x -> x.getDouble("conflictIdx")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+
+        for (String key : temp.keySet()){
+            score = new Record()
+                    .set("schoolId", schoolId)
+                    .set("gradeId", gradeId)
+                    .set("classId", classId)
+                    .set("stuId", key)
+                    .set("testDate", temp.get(key).getStr("testDate"))
+                    .set("elapsedTime", temp.get(key).getStr("elapsedTime"))
+                    .set("missRate", temp.get(key).getStr("missRate"))
+                    .set("idxL", temp.get(key).getStr("idxL"))
+                    .set("idxF", temp.get(key).getStr("idxF"))
+                    .set("idxC", temp.get(key).getStr("idxC"))
+                    /*维度*/
+                    .set("emotion", new DecimalFormat("0.00").format((temp.get(key).getDouble("emotion") - ave_emo) / s_emo * 10 + 50))
+                    .set("Interpersonal", new DecimalFormat("0.00").format((temp.get(key).getDouble("Interpersonal") - ave_Inter) / s_Inter * 10 + 50))
+                    .set("attention", new DecimalFormat("0.00").format((temp.get(key).getDouble("attention") - ave_atten) / s_atten * 10 + 50))
+                    .set("addiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("addiction") - ave_addict) / s_addict * 10 + 50))
+                    .set("Weariness", new DecimalFormat("0.00").format((temp.get(key).getDouble("Weariness") - ave_Wear) / s_Wear * 10 + 50))
+                    /*子维度*/
+                    .set("anxiety", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxiety") - ave_anxiety) / s_anxiety * 10 + 50))
+                    .set("depression", new DecimalFormat("0.00").format((temp.get(key).getDouble("depression") - ave_depression) / s_depression * 10 + 50))
+                    .set("uncontroll", new DecimalFormat("0.00").format((temp.get(key).getDouble("uncontroll") - ave_uncontroll) / s_uncontroll * 10 + 50))
+                    .set("fail", new DecimalFormat("0.00").format((temp.get(key).getDouble("fail") - ave_fail) / s_fail * 10 + 50))
+                    .set("somatization", new DecimalFormat("0.00").format((temp.get(key).getDouble("somatization") - ave_somatization) / s_somatization * 10 + 50))
+                    .set("oddBehav", new DecimalFormat("0.00").format((temp.get(key).getDouble("oddBehav") - ave_oddBehav) / s_oddBehav * 10 + 50))
+                    .set("socialPress", new DecimalFormat("0.00").format((temp.get(key).getDouble("socialPress") - ave_socialPress) / s_socialPress * 10 + 50))
+                    .set("degenerate", new DecimalFormat("0.00").format((temp.get(key).getDouble("degenerate") - ave_degenerate) / s_degenerate * 10 + 50))
+                    .set("bully", new DecimalFormat("0.00").format((temp.get(key).getDouble("bully") - ave_bully) / s_bully * 10 + 50))
+                    .set("inattention", new DecimalFormat("0.00").format((temp.get(key).getDouble("inattention") - ave_inattention) / s_inattention * 10 + 50))
+                    .set("mania", new DecimalFormat("0.00").format((temp.get(key).getDouble("mania") - ave_mania) / s_mania * 10 + 50))
+                    .set("netAddiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("netAddiction") - ave_netAddiction) / s_netAddiction * 10 + 50))
+                    .set("phoneAddiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50))
+                    .set("hateSchool", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateSchool") - ave_hateSchool) / s_hateSchool * 10 + 50))
+                    .set("hateTeacher", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateTeacher") - ave_hateTeacher) / s_hateTeacher * 10 + 50))
+                    .set("hateStudy", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateStudy") - ave_hateStudy) / s_hateStudy * 10 + 50))
+                    .set("anxExam", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExam") - ave_anxExam) / s_anxExam * 10 + 50))
+                    /*指数*/
+                    .set("autolesionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("autolesionIdx") - ave_autolesionIdx) / s_autolesionIdx * 10 + 50))
+                    .set("HelplessnessIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("HelplessnessIdx") - ave_HelplessnessIdx) / s_HelplessnessIdx * 10 + 50))
+                    .set("interpersonalIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("interpersonalIdx") - ave_interpersonalIdx) / s_interpersonalIdx * 10 + 50))
+                    .set("addictionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("addictionIdx") - ave_addictionIdx) / s_addictionIdx * 10 + 50))
+                    .set("bullyIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("bullyIdx") - ave_bullyIdx) / s_bullyIdx * 10 + 50))
+                    .set("behavIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("behavIdx") - ave_behavIdx) / s_behavIdx * 10 + 50))
+                    .set("maniaIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("maniaIdx") - ave_maniaIdx) / s_maniaIdx * 10 + 50))
+                    .set("poorHealthIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("poorHealthIdx") - ave_poorHealthIdx) / s_poorHealthIdx * 10 + 50))
+                    .set("WearinessIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("WearinessIdx") - ave_WearinessIdx) / s_WearinessIdx * 10 + 50))
+                    .set("DistractionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("DistractionIdx") - ave_DistractionIdx) / s_DistractionIdx * 10 + 50))
+                    .set("anxExamIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExamIdx") - ave_anxExamIdx) / s_anxExamIdx * 10 + 50))
+                    .set("conflictIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("conflictIdx") - ave_conflictIdx) / s_conflictIdx * 10 + 50));
+            //dao.save(score);
+            System.out.println(score);
+
+
+            /* System.out.println((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50);
+            System.out.println(temp.get(key).getDouble("phoneAddiction"));
+            System.out.println(ave_phoneAddiction);
+            System.out.println(s_phoneAddiction);
+            System.out.println("--------------");*/
+
         }
 
-
     }
 
-    public boolean save(List<Record> allList, List<Record> findGroupByPart, List<Record> findAllScore){
-        /*添加学生唯一标识信息*/
-        Record recordFirstPart = new Record();
-        /* --------------------------------- 添加写入数据库信息 start --------------------------------- */
-        recordFirstPart.set("schoolId", findGroupByPart.get(0).getStr("schoolId"))
-                .set("gradeId", findGroupByPart.get(0).getStr("gradeId"))
-                .set("classId", findGroupByPart.get(0).getStr("classId"))
-                .set("stuId", findGroupByPart.get(0).getStr("stuId"))
-                //问题行为的交卷时间
-                .set("testDate", this.getTestTime(findGroupByPart.get(0).getStr("startTime"), findGroupByPart.get(1).getStr("submitTime")))
-                //作答时间
-                .set("elapsedTime", "0")
-                //作答缺失
-                .set("missRate", "0%")
-                //效度分数
-                .set("idxL", new DecimalFormat("0.00").format(subdimension.getL(this.getScoreList(findAllScore, "30101"))))
-                .set("idxF", new DecimalFormat("0.00").format(subdimension.getF(this.getScoreList(findAllScore, "30103"))))
-                .set("idxC", new DecimalFormat("0.00").format(subdimension.getC(this.getScoreList(findAllScore, "30102"), this.getCScoreList(findAllScore))))
-                //情绪子维度分数
-                .set("anxiety", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10101"))))
-                .set("depression", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10102"))))
-                .set("uncontroll", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10104"))))
-                .set("fail", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10105"))))
-                .set("somatization", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10103"))))
-                .set("oddBehav", new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10106"))))
-                /*情绪维度*/
-                .set("emotion",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10100"))))
-                //人际问题子维度
-                .set("socialPress",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10201"))))
-                .set("degenerate",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10202"))))
-                .set("bully",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10203"))))
-                /*人际问题维度*/
-                .set("Interpersonal",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10200"))))
-                //注意力问题子维度
-                .set("inattention",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10301"))))
-                .set("mania",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10302"))))
-                /*注意力维度*/
-                .set("attention",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10300"))))
-                //成瘾问题子维度
-                .set("netAddiction",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10401"))))
-                .set("phoneAddiction",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10402"))))
-                /*成瘾问题维度*/
-                .set("addiction",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10400"))))
-                //厌学状况子维度
-                .set("hateSchool",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10501"))))
-                .set("hateTeacher",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10502"))))
-                .set("hateStudy",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10503"))))
-                .set("anxExam",new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10504"))))
-                /*厌学问题维度*/
-                .set("Weariness",new DecimalFormat("0.00").format(subdimension.getAverage(this.getListToArray(allList, "10500"))));
-
-        /* --------------------------------- 添加写入数据库信息 end --------------------------------- */
-        return dao.save(recordFirstPart);
-
-    }
-
-    public void secondPart(String schoolId, String gradeId, String classId){
-        /**第一部分报表中 某个班的所有成绩*/
-        List<Record> listAll = dao.find(SQL.findGenerate(schoolId, gradeId, classId));
-        /**通过学号分组 获取id值*/
-        List<Record> listId = dao.find(SQL.findId(schoolId, gradeId, classId));
-
-        Record updateRecord = new Record();
-
-        double[] anxiety = subdimension.getT(this.getListToDouble(listAll, "anxiety"));
-        double[] depression = subdimension.getT(this.getListToDouble(listAll, "depression"));
-        double[] uncontroll = subdimension.getT(this.getListToDouble(listAll, "uncontroll"));
-        double[] fail = subdimension.getT(this.getListToDouble(listAll, "fail"));
-        double[] somatization = subdimension.getT(this.getListToDouble(listAll, "somatization"));
-        double[] oddBehav = subdimension.getT(this.getListToDouble(listAll, "oddBehav"));
-        double[] socialPress = subdimension.getT(this.getListToDouble(listAll, "socialPress"));
-        double[] degenerate = subdimension.getT(this.getListToDouble(listAll, "degenerate"));
-        double[] bully = subdimension.getT(this.getListToDouble(listAll, "bully"));
-        double[] inattention = subdimension.getT(this.getListToDouble(listAll, "inattention"));
-        double[] mania = subdimension.getT(this.getListToDouble(listAll, "mania"));
-        double[] netAddiction = subdimension.getT(this.getListToDouble(listAll, "netAddiction"));
-        double[] phoneAddiction = subdimension.getT(this.getListToDouble(listAll, "phoneAddiction"));
-        double[] hateSchool = subdimension.getT(this.getListToDouble(listAll, "hateSchool"));
-        double[] hateTeacher = subdimension.getT(this.getListToDouble(listAll, "hateTeacher"));
-        double[] hateStudy = subdimension.getT(this.getListToDouble(listAll, "hateStudy"));
-        double[] anxExam = subdimension.getT(this.getListToDouble(listAll, "anxExam"));
-        double[] emotion = this.getEmotionT(anxiety, depression, uncontroll, fail, somatization, oddBehav);
-        double[] Interpersonal = this.getInterpersonalT(socialPress, degenerate, bully);
-        double[] attention = this.getAttentionT(inattention, mania);
-        double[] addiction = this.getAddictionT(netAddiction, phoneAddiction);
-        double[] Weariness = this.getWearinessT(hateSchool, hateTeacher, hateStudy, anxExam);
-        double[] autolesionIdx = subdimension.getT(this.getautolesionIdx(anxiety, depression, somatization));
-        double[] HelplessnessIdx = subdimension.getT(this.getHelplessnessIdx(uncontroll, fail));
-        double[] interpersonalIdx = subdimension.getT(this.getinterpersonalIdx(socialPress, degenerate));
-        double[] addictionIdx = subdimension.getT(this.getaddictionIdx(netAddiction, phoneAddiction));
-        double[] bullyIdx = subdimension.getT(this.getbullyIdx(bully));
-        double[] behavIdx = subdimension.getT(this.getbullyIdx(bully));
-        double[] maniaIdx = subdimension.getT(this.getmaniaIdx(mania));
-        double[] poorHealthIdx = subdimension.getT(this.getpoorHealthIdx(somatization));
-        double[] WearinessIdx = subdimension.getT(this.getWearinessIdx(hateSchool, hateStudy));
-        double[] DistractionIdx = subdimension.getT(this.getDistractionIdx(inattention));
-        double[] anxExamIdx = subdimension.getT(this.getDistractionIdx(inattention));
-        double[] conflictIdx = subdimension.getT(this.getconflictIdx(hateTeacher));
-        for (int i = 0; i < listId.size(); i++){
-            updateRecord.set("id", listId.get(i).getInt("id"))
-                    .set("anxiety", new DecimalFormat("0.00").format(anxiety[i]))
-                    .set("depression", new DecimalFormat("0.00").format(depression[i]))
-                    .set("uncontroll", new DecimalFormat("0.00").format(uncontroll[i]))
-                    .set("fail", new DecimalFormat("0.00").format(fail[i]))
-                    .set("somatization", new DecimalFormat("0.00").format(somatization[i]))
-                    .set("oddBehav", new DecimalFormat("0.00").format(oddBehav[i]))
-                    .set("socialPress", new DecimalFormat("0.00").format(socialPress[i]))
-                    .set("degenerate", new DecimalFormat("0.00").format(degenerate[i]))
-                    .set("bully", new DecimalFormat("0.00").format(bully[i]))
-                    .set("inattention", new DecimalFormat("0.00").format(inattention[i]))
-                    .set("mania", new DecimalFormat("0.00").format(mania[i]))
-                    .set("netAddiction", new DecimalFormat("0.00").format(netAddiction[i]))
-                    .set("phoneAddiction", new DecimalFormat("0.00").format(phoneAddiction[i]))
-                    .set("hateSchool", new DecimalFormat("0.00").format(hateSchool[i]))
-                    .set("hateTeacher", new DecimalFormat("0.00").format(hateTeacher[i]))
-                    .set("hateStudy", new DecimalFormat("0.00").format(hateStudy[i]))
-                    .set("anxExam", new DecimalFormat("0.00").format(anxExam[i]))
-                    .set("emotion", new DecimalFormat("0.00").format(emotion[i]))
-                    .set("Interpersonal", new DecimalFormat("0.00").format(Interpersonal[i]))
-                    .set("attention", new DecimalFormat("0.00").format(attention[i]))
-                    .set("addiction", new DecimalFormat("0.00").format(addiction[i]))
-                    .set("Weariness", new DecimalFormat("0.00").format(Weariness[i]))
-                    .set("autolesionIdx", new DecimalFormat("0.00").format(autolesionIdx[i]))
-                    .set("HelplessnessIdx", new DecimalFormat("0.00").format(HelplessnessIdx[i]))
-                    .set("interpersonalIdx", new DecimalFormat("0.00").format(interpersonalIdx[i]))
-                    .set("addictionIdx", new DecimalFormat("0.00").format(addictionIdx[i]))
-                    .set("bullyIdx", new DecimalFormat("0.00").format(bullyIdx[i]))
-                    .set("behavIdx", new DecimalFormat("0.00").format(behavIdx[i]))
-                    .set("maniaIdx", new DecimalFormat("0.00").format(maniaIdx[i]))
-                    .set("poorHealthIdx", new DecimalFormat("0.00").format(poorHealthIdx[i]))
-                    .set("WearinessIdx", new DecimalFormat("0.00").format(WearinessIdx[i]))
-                    .set("DistractionIdx", new DecimalFormat("0.00").format(DistractionIdx[i]))
-                    .set("anxExamIdx", new DecimalFormat("0.00").format(anxExamIdx[i]))
-                    .set("conflictIdx", new DecimalFormat("0.00").format(conflictIdx[i]));
-            dao.update("tbproblembehavrep", "id", updateRecord);
-        }
-    }
-
-    /**
-     * 计算答题时间
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    private String getTestTime(String startTime, String endTime){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        DateTime start = dateTimeFormatter.parseDateTime(startTime);
-        DateTime end = dateTimeFormatter.parseDateTime(endTime);
-        return String.valueOf(Minutes.minutesBetween(start, end).getMinutes());
-    }
 
     /**
      * 获取第一部分中某子维度集合
@@ -243,235 +322,16 @@ public class FirstService {
     }
 
     /**
-     * 将list转为double数组
-     * @param findAll
-     * @param subdimension
+     * 计算答题时间
+     * @param startTime
+     * @param endTime
      * @return
      */
-    private double[] getListToDouble(List<Record> findAll, String subdimension){
-        String[] result = findAll.stream()
-                .map(x -> x.getStr(subdimension))
-                .collect(Collectors.toList())
-                .stream()
-                .toArray(String[]::new);
-        double[] array = new double[result.length];
-        for (int i = 0; i < result.length; i++){
-            array[i] = Double.parseDouble(result[i]);
-        }
-        return array;
+    private String getTestTime(String startTime, String endTime){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        DateTime start = dateTimeFormatter.parseDateTime(startTime);
+        DateTime end = dateTimeFormatter.parseDateTime(endTime);
+        return String.valueOf(Minutes.minutesBetween(start, end).getMinutes());
     }
-
-    /**
-     * 情绪维度 T 分数
-     * @param anxiety
-     * @param depression
-     * @param uncontroll
-     * @param fail
-     * @param somatization
-     * @param oddBehav
-     * @return
-     */
-    private double[] getEmotionT(double[] anxiety, double[] depression, double[] uncontroll, double[] fail,
-                                 double[] somatization, double[] oddBehav){
-        double[] result = new double[anxiety.length];
-        for (int i = 0; i < anxiety.length; i++){
-            result[i] = (anxiety[i] + depression[i] + uncontroll[i] + fail[i] + somatization[i] + oddBehav[i]) / 6;
-        }
-        return result;
-    }
-
-    /**
-     * 人际问题 T分数
-     * @param socialPress
-     * @param degenerate
-     * @param bully
-     * @return
-     */
-    private double[] getInterpersonalT(double[] socialPress, double[] degenerate, double[] bully){
-        double[] result = new double[socialPress.length];
-        for (int i = 0; i < socialPress.length; i++){
-            result[i] = (socialPress[i] + degenerate[i] + bully[i]) / 3;
-        }
-        return result;
-    }
-
-    /**
-     * 注意力问题T分数
-     * @param inattention
-     * @param mania
-     * @return
-     */
-    private double[] getAttentionT(double[] inattention, double[] mania){
-        double[] result = new double[inattention.length];
-        for (int i = 0; i < inattention.length; i++){
-            result[i] = (inattention[i] + mania[i] ) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 成瘾问题 T分数
-     * @param netAddiction
-     * @param phoneAddiction
-     * @return
-     */
-    private double[] getAddictionT(double[] netAddiction, double[] phoneAddiction){
-        double[] result = new double[netAddiction.length];
-        for (int i = 0; i < netAddiction.length; i++){
-            result[i] = (netAddiction[i] + phoneAddiction[i] ) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 厌学问题T分数
-     * @param hateSchool
-     * @param hateTeacher
-     * @param hateStudy
-     * @param anxExam
-     * @return
-     */
-    private double[] getWearinessT(double[] hateSchool, double[] hateTeacher, double[] hateStudy, double[] anxExam){
-        double[] result = new double[hateSchool.length];
-        for (int i = 0; i < hateSchool.length; i++){
-            result[i] = (hateSchool[i] + hateTeacher[i] + hateStudy[i] + anxExam[i]) / 4;
-        }
-        return result;
-    }
-
-    /**
-     * 自伤指数原始分
-     * @param anxiety
-     * @param depression
-     * @param somatization
-     * @return
-     */
-    private double[] getautolesionIdx(double[] anxiety, double[] depression, double[] somatization){
-        double[] result = new double[anxiety.length];
-        for (int i = 1; i < anxiety.length; i ++){
-            result[i] = (anxiety[i] + depression[i] + somatization[i]) / 3;
-        }
-        return result;
-    }
-
-    /**
-     * 无助感原始分
-     * @param uncontroll
-     * @param fail
-     * @return
-     */
-    private double[] getHelplessnessIdx(double[] uncontroll, double[] fail){
-        double[] result = new double[uncontroll.length];
-        for (int i = 1; i < uncontroll.length; i ++){
-            result[i] = (uncontroll[i] + fail[i]) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 人际障碍指数
-     * @param socialPress
-     * @param degenerate
-     * @return
-     */
-    private double[] getinterpersonalIdx(double[] socialPress, double[] degenerate){
-        double[] result = new double[socialPress.length];
-        for (int i = 1; i < socialPress.length; i ++){
-            result[i] = (socialPress[i] + degenerate[i]) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 成瘾指数
-     * @param netAddiction
-     * @param phoneAddiction
-     * @return
-     */
-    private double[] getaddictionIdx(double[] netAddiction, double[] phoneAddiction){
-        double[] result = new double[netAddiction.length];
-        for (int i = 1; i < netAddiction.length; i ++){
-            result[i] = (netAddiction[i] + phoneAddiction[i]) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 受欺负指数
-     * @param bully
-     * @return
-     */
-    private double[] getbullyIdx(double[] bully){
-        return bully;
-    }
-
-    /**
-     * 不寻常行为指数
-     * @param oddBehav
-     * @return
-     */
-    private double[] getbehavIdx(double[] oddBehav){
-        return oddBehav;
-    }
-
-    /**
-     * 狂躁指数
-     * @param mania
-     * @return
-     */
-    private double[] getmaniaIdx(double[] mania){
-        return mania;
-    }
-
-    /**
-     * 身体不适指数
-     * @param somatization
-     * @return
-     */
-    private double[] getpoorHealthIdx(double[] somatization){
-        return somatization;
-    }
-
-    /**
-     * 厌学指数
-     * @param hateSchool
-     * @param hateStudy
-     * @return
-     */
-    private double[] getWearinessIdx(double[] hateSchool, double[] hateStudy){
-        double[] result = new double[hateSchool.length];
-        for (int i = 1; i < hateSchool.length; i ++){
-            result[i] = (hateSchool[i] + hateStudy[i]) / 2;
-        }
-        return result;
-    }
-
-    /**
-     * 分心指数
-     * @param inattention
-     * @return
-     */
-    private double[] getDistractionIdx(double[] inattention){
-        return inattention;
-    }
-
-    /**
-     * 考试焦虑指数
-     * @param anxExam
-     * @return
-     */
-    private double[] getanxExamIdx(double[] anxExam){
-        return anxExam;
-    }
-
-    /**
-     * 师生冲突指数
-     * @param heatTeacher
-     * @return
-     */
-    private double[] getconflictIdx(double[] heatTeacher){
-        return heatTeacher;
-    }
-
 
 }

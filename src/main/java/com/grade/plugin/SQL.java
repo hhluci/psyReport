@@ -99,4 +99,16 @@ public class SQL {
                 "group by e.part";
     }
 
+    /**通过分组查询时间*/
+    public static String findTestTime(String schoolId, String gradeId, String classId, String stuId){
+        return "select\n" +
+                "     a.startTime, a.submitTime,e.part\n" +
+                "from answer a\n" +
+                "   inner join question_bank b on a.queCode = b.question_code\n" +
+                "   inner join eva_com_code_table e on a.queCode = e.question_code\n" +
+                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
+                "  and a.classId = '" + classId + "' and a.stuId = '" + stuId + "'\n" +
+                "group by e.part";
+    }
+
 }
