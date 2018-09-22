@@ -8,13 +8,7 @@ W
 `
 0src/main/java/com/grade/plugin/Subdimension.java,3\a\3af0dc4f93088c68a9161d669c9cb8f2b297563f
 d
-4src/test/java/com/grade/plugin/SubdimensionTest.java,3\f\3f006fb8b2f629ba35562909b394be7653c534d5
-d
 4src/test/java/com/grade/plugin/FirstServiceTest.java,1\b\1bd80152c78ddeb9edd3c966258fc3ba6fd33bd0
-W
-'src/main/java/com/grade/plugin/SQL.java,d\f\dff12916603cb67934073cd4f8f633559da69e01
-e
-5src/test/java/com/grade/plugin/SecondServiceTest.java,d\3\d301aba7c06e15c046479932b6699d15c790f8d5
 `
 0src/main/java/com/grade/plugin/FirstService.java,3\9\39e4d357c977855d461ef419d2229fa6a0a1d276
 a
@@ -29,3 +23,12 @@ Q
 !src/main/java/com/grade/Main.java,b\a\ba3a3c7975dfe3546b5fa53e5487800472c40af4
 B
 成绩计算.patch,8\0\806efb11ca36e655eb25aa2e9257a5d4f3ea7d51
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+\
+,src/main/java/com/grade/plugin/Constant.java,5\5\558ef7ed22cc9e28f08afe74c9288f0a6e5e722e
+j
+:src/test/java/com/grade/plugin/SecondFirstServiceTest.java,3\a\3a316c771d135dd8a72a70bc3a5945038cac8547
+U
+%src/test/java/com/grade/MainTest.java,4\b\4b844bd2a37013af8d13d753d545ef1bb1c10687

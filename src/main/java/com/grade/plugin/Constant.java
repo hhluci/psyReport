@@ -7,7 +7,10 @@ package com.grade.plugin;
  * @Description: 查询语句
  * @Date: Created in 19:12 2018/9/13
  */
-public class SQL {
+public class Constant {
+
+    /*当标准差为零时返回结果*/
+    public static String INVALID_STANDARD_DEVIATION = "0";
 
     public static String findAll(String schoolId, String gradeId, String classId, String stuId){
         return "select\n" +

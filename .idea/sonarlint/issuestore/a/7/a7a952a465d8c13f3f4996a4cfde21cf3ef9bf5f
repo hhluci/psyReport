@@ -1,126 +1,56 @@
 
-qsquid:S00117“"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù¢©ï8˜ƒºŞ,
-Vsquid:S1481•"7Remove this unused "ave_agreeablenessT" local variable.(Ñ˜³ı8×ç¹Ş,
-]squid:UnusedPrivateMethodH"1Remove this unused private "getScoreList" method.(Ñ»‘€8üıò¸Ş,
-csquid:S1854ª"ERemove this useless assignment to local variable "ave_SocialActiveT".(’µ\8éˆë¹Ş,
-dsquid:S1854­"ERemove this useless assignment to local variable "ave_situationSelT".(‰’ˆ†8éˆë¹Ş,
-ssquid:S1854¡"ORemove this useless assignment to local variable "ave_learningResponsibilityT".(Å¯İãùÿÿÿÿ8éˆë¹Ş,
-vsquid:S00117â"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯…‰ÿÿÿÿÿ8üıò¸Ş,
-asquid:S1854Œ"BRemove this useless assignment to local variable "ave_companionT".(¯ó•8éˆë¹Ş,
-vsquid:S00117±"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ìéá½ùÿÿÿÿ8˜ƒºŞ,
-qsquid:S00117•"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ˜³ı8×ç¹Ş,
-Ssquid:S1481«"4Remove this unused "s_SocialActiveT" local variable.(úÏº8˜ƒºŞ,
-isquid:S1854°"ERemove this useless assignment to local variable "ave_situationAdpT".(ƒ³±ÿÿÿÿÿ8éˆë¹Ş,
-gsquid:S1854›"CRemove this useless assignment to local variable "ave_selfEsteemT".(Íƒª‡üÿÿÿÿ8éˆë¹Ş,
-vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ûÚ©Àúÿÿÿÿ8à‡Ş¹Ş,
-esquid:UnusedPrivateMethod}"4Remove this unused private "getListToDouble" method.(‡²Ÿúÿÿÿÿ8üıò¸Ş,
-[squid:S1481·"7Remove this unused "s_cognitiveChangeT" local variable.(¢‚ˆ€şÿÿÿÿ8˜ƒºŞ,
-Rsquid:S1481Œ"3Remove this unused "ave_companionT" local variable.(¯ó•8Õ×Ö¹Ş,
-csquid:S1854¹"DRemove this useless assignment to local variable "ave_responseModT".(Ã—Î®8éˆë¹Ş,
-jsquid:S1854·"FRemove this useless assignment to local variable "s_cognitiveChangeT".(¢‚ˆ€şÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117ã"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ç¡·Ãÿÿÿÿÿ8üıò¸Ş,
-vsquid:S00117º"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğ®±ˆşÿÿÿÿ8˜ƒºŞ,
-Xsquid:S1481’"4Remove this unused "ave_tsRelationT" local variable.(ÙÕ´Ÿıÿÿÿÿ8×ç¹Ş,
-gsquid:S1854®"CRemove this useless assignment to local variable "s_situationSelT".(äôİñşÿÿÿÿ8˜ƒºŞ,
-msquid:S1854¤"IRemove this useless assignment to local variable "ave_continueTnterestT".(ğÌËïùÿÿÿÿ8éˆë¹Ş,
-Xsquid:S1481"4Remove this unused "ave_parenthoodT" local variable.(ûÚ©Àúÿÿÿÿ8à‡Ş¹Ş,
-vsquid:S00117¡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å¯İãùÿÿÿÿ8Êƒé¹Ş,
-Wsquid:S1481§"8Remove this unused "ave_continueEffortT" local variable.(’ø´©8éˆë¹Ş,
-Lsquid:S1481¨"-Remove this unused "testTime" local variable.(†éë¯8üıò¸Ş,
-dsquid:S1854"@Remove this useless assignment to local variable "s_companionT".(ÁÚ·Ûıÿÿÿÿ8éˆë¹Ş,
-vsquid:S00117Ÿ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŞÀ²ÿÿÿÿÿ8˜ƒºŞ,
-Xsquid:S1481Ÿ"4Remove this unused "s_SelfControllT" local variable.(ŞÀ²ÿÿÿÿÿ8˜ƒºŞ,
-Zsquid:S1481¨"6Remove this unused "s_continueEffortT" local variable.(÷¡ÍÃøÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117¶"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶œÕ×úÿÿÿÿ8éˆë¹Ş,
-vsquid:S00117®"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äôİñşÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117°"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒ³±ÿÿÿÿÿ8éˆë¹Ş,
-qsquid:S00117¹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã—Î®8éˆë¹Ş,
-qsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù¢ğ8Êƒé¹Ş,
-esquid:S1854œ"ARemove this useless assignment to local variable "s_selfEsteemT".(«›÷ùùÿÿÿÿ8˜ƒºŞ,
-qsquid:S00117¥"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€¨ò8˜ƒºŞ,
-psquid:S00117ª"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’µ\8éˆë¹Ş,
-Ssquid:S1481˜"4Remove this unused "ave_resilienceT" local variable.(şßä–8×ç¹Ş,
-vsquid:S00117–"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ÂÂêÿÿÿÿÿ8˜ƒºŞ,
-nsquid:CommentedOutCodeLine1"<This block of commented-out lines of code should be removed.(®–æøüÿÿÿÿ8üıò¸Ş,
-isquid:S1854¨"ERemove this useless assignment to local variable "s_continueEffortT".(÷¡ÍÃøÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117·"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¢‚ˆ€şÿÿÿÿ8˜ƒºŞ,
-gsquid:S1854’"CRemove this useless assignment to local variable "ave_tsRelationT".(ÙÕ´Ÿıÿÿÿÿ8éˆë¹Ş,
-vsquid:S00117Ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùñÉøÿÿÿÿ8üıò¸Ş,
-Usquid:S1481"1Remove this unused "s_companionT" local variable.(ÁÚ·Ûıÿÿÿÿ8²Ëâ¹Ş,
-Zsquid:S1481°"6Remove this unused "ave_situationAdpT" local variable.(ƒ³±ÿÿÿÿÿ8éˆë¹Ş,
-jsquid:S1854³"FRemove this useless assignment to local variable "ave_distriOfAttenT".(–åü¬úÿÿÿÿ8éˆë¹Ş,
-qsquid:S00117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰’ˆ†8éˆë¹Ş,
-]squid:S1481¶"9Remove this unused "ave_cognitiveChangeT" local variable.(¶œÕ×úÿÿÿÿ8éˆë¹Ş,
-qsquid:S1854¢"MRemove this useless assignment to local variable "s_learningResponsibilityT".(ú²šøÿÿÿÿ8˜ƒºŞ,
-fsquid:S1854§"GRemove this useless assignment to local variable "ave_continueEffortT".(’ø´©8éˆë¹Ş,
-[squid:S1854¨"<Remove this useless assignment to local variable "testTime".(†éë¯8üıò¸Ş,
-vsquid:S00117¢"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ú²šøÿÿÿÿ8˜ƒºŞ,
-esquid:S1854•"FRemove this useless assignment to local variable "ave_agreeablenessT".(Ñ˜³ı8éˆë¹Ş,
-vsquid:S00117Š"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(âÒ¹Éúÿÿÿÿ8üıò¸Ş,
-qsquid:S00117§"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’ø´©8éˆë¹Ş,
-bsquid:S1481¢">Remove this unused "s_learningResponsibilityT" local variable.(ú²šøÿÿÿÿ8˜ƒºŞ,
-Tsquid:S1481ª"6Remove this unused "ave_SocialActiveT" local variable.(’µ\8éˆë¹Ş,
-bsquid:S1854˜"CRemove this useless assignment to local variable "ave_resilienceT".(şßä–8éˆë¹Ş,
-vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(óŞÛœûÿÿÿÿ8Äùñ¹Ş,
-esquid:S1854™"ARemove this useless assignment to local variable "s_resilienceT".(«‡¿ÿÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117¤"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğÌËïùÿÿÿÿ8Êƒé¹Ş,
-vsquid:S00117€"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œ˜â¦úÿÿÿÿ8üıò¸Ş,
-vsquid:S00117³"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–åü¬úÿÿÿÿ8éˆë¹Ş,
-gsquid:S1854"CRemove this useless assignment to local variable "ave_parenthoodT".(ûÚ©Àúÿÿÿÿ8éˆë¹Ş,
-fsquid:S1854¥"GRemove this useless assignment to local variable "s_continueTnterestT".(€¨ò8˜ƒºŞ,
-vsquid:S00117É"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µ…åÈùÿÿÿÿ8üıò¸Ş,
-\
-squid:S106Í"9Replace this use of System.out or System.err by a logger.(æ¨¤šøÿÿÿÿ8üıò¸Ş,
-vsquid:S00117ƒ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µá¡Úıÿÿÿÿ8üıò¸Ş,
-vsquid:S00117œ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«›÷ùùÿÿÿÿ8˜ƒºŞ,
-Wsquid:S1481¥"8Remove this unused "s_continueTnterestT" local variable.(€¨ò8˜ƒºŞ,
-nsquid:CommentedOutCodeLine!"<This block of commented-out lines of code should be removed.(Ö’Ã¾ıÿÿÿÿ8üıò¸Ş,
-Xsquid:S1481®"4Remove this unused "s_situationSelT" local variable.(äôİñşÿÿÿÿ8˜ƒºŞ,
-Usquid:S1481­"6Remove this unused "ave_situationSelT" local variable.(‰’ˆ†8éˆë¹Ş,
-Tsquid:S1481¹"5Remove this unused "ave_responseModT" local variable.(Ã—Î®8éˆë¹Ş,
-osquid:CommentedOutCodeLine»"<This block of commented-out lines of code should be removed.(ş—¯”úÿÿÿÿ8üıò¸Ş,
-qsquid:S00117´"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡û8˜ƒºŞ,
-Xsquid:S2864¼"4Iterate over the "entrySet" instead of the "keySet".(ÉÿÙæşÿÿÿÿ8éˆë¹Ş,
-Ysquid:S1481–"5Remove this unused "s_agreeablenessT" local variable.(‘ÂÂêÿÿÿÿÿ8˜ƒºŞ,
-†squid:UselessImportCheck
-"VRemove this unused import 'javax.xml.bind.annotation.adapters.CollapsedStringAdapter'.(Ó‚—ùÿÿÿÿ8üıò¸Ş,
-qsquid:UselessImportCheck"ARemove this unused import 'java.util.concurrent.RecursiveAction'.( Ú¼ıÿÿÿÿÿ8üıò¸Ş,
-vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁÚ·Ûıÿÿÿÿ8²Ëâ¹Ş,
-qsquid:S00117˜"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şßä–8×ç¹Ş,
-`squid:S1854“"ARemove this useless assignment to local variable "s_tsRelationT".(ù¢©ï8˜ƒºŞ,
-dsquid:S1481¡"@Remove this unused "ave_learningResponsibilityT" local variable.(Å¯İãùÿÿÿÿ8Êƒé¹Ş,
-csquid:S1854´"DRemove this useless assignment to local variable "s_distriOfAttenT".(¡û8˜ƒºŞ,
-Vsquid:S1481"2Remove this unused "s_parenthoodT" local variable.(óŞÛœûÿÿÿÿ8Äùñ¹Ş,
-qsquid:S00117È"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆ÷áª8üıò¸Ş,
-^squid:S1481¤":Remove this unused "ave_continueTnterestT" local variable.(ğÌËïùÿÿÿÿ8Êƒé¹Ş,
-vsquid:S00117‰"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô ä£øÿÿÿÿ8üıò¸Ş,
-bsquid:S1854«"CRemove this useless assignment to local variable "s_SocialActiveT".(úÏº8˜ƒºŞ,
-Tsquid:S1481´"5Remove this unused "s_distriOfAttenT" local variable.(¡û8˜ƒºŞ,
-Xsquid:S1481›"4Remove this unused "ave_selfEsteemT" local variable.(Íƒª‡üÿÿÿÿ8×ç¹Ş,
-lsquid:S1854¶"HRemove this useless assignment to local variable "ave_cognitiveChangeT".(¶œÕ×úÿÿÿÿ8Å¡å¹Ş,
-hsquid:S1854–"DRemove this useless assignment to local variable "s_agreeablenessT".(‘ÂÂêÿÿÿÿÿ8˜ƒºŞ,
-Usquid:S1481"6Remove this unused "ave_SelfControllT" local variable.(ù¢ğ8Êƒé¹Ş,
-vsquid:S00117‡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕÇ…˜úÿÿÿÿ8üıò¸Ş,
-qsquid:S00117Œ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ó•8Õ×Ö¹Ş,
-vsquid:S00117’"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÙÕ´Ÿıÿÿÿÿ8×ç¹Ş,
-gsquid:S1854Ÿ"CRemove this useless assignment to local variable "s_SelfControllT".(ŞÀ²ÿÿÿÿÿ8˜ƒºŞ,
-isquid:CommentedOutCodeLine/"<This block of commented-out lines of code should be removed.(•ùÒ³8üıò¸Ş,
-Xsquid:S1481±"4Remove this unused "s_situationAdpT" local variable.(ìéá½ùÿÿÿÿ8˜ƒºŞ,
-[squid:S1481³"7Remove this unused "ave_distriOfAttenT" local variable.(–åü¬úÿÿÿÿ8éˆë¹Ş,
-qsquid:S00117„"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôÇ¾8üıò¸Ş,
-vsquid:S00117›"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Íƒª‡üÿÿÿÿ8×ç¹Ş,
-qsquid:S00117†"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğõ±Ó8üıò¸Ş,
-esquid:S1854"ARemove this useless assignment to local variable "s_parenthoodT".(óŞÛœûÿÿÿÿ8Äùñ¹Ş,
-\squid:UnusedPrivateMethod`"0Remove this unused private "getTestTime" method.(—÷’×8üıò¸Ş,
-Vsquid:S1481™"2Remove this unused "s_resilienceT" local variable.(«‡¿ÿÿÿÿÿ8˜ƒºŞ,
-vsquid:S00117¨"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(÷¡ÍÃøÿÿÿÿ8˜ƒºŞ,
-Qsquid:S1481“"2Remove this unused "s_tsRelationT" local variable.(ù¢©ï8˜ƒºŞ,
-fsquid:S1854º"BRemove this useless assignment to local variable "s_responseModT".(ğ®±ˆşÿÿÿÿ8˜ƒºŞ,
-csquid:UnusedPrivateMethodT"7Remove this unused private "getScoreListSecond" method.(×»óƒ8üıò¸Ş,
-dsquid:UnusedPrivateMethodk"3Remove this unused private "getListToArray" method.(ÇÛà™øÿÿÿÿ8üıò¸Ş,
-Wsquid:S1481º"3Remove this unused "s_responseModT" local variable.(ğ®±ˆşÿÿÿÿ8˜ƒºŞ,
-dsquid:S1854"ERemove this useless assignment to local variable "ave_SelfControllT".(ù¢ğ8éˆë¹Ş,
-Vsquid:S1481œ"2Remove this unused "s_selfEsteemT" local variable.(«›÷ùùÿÿÿÿ8˜ƒºŞ,
-gsquid:S1854±"CRemove this useless assignment to local variable "s_situationAdpT".(ìéá½ùÿÿÿÿ8˜ƒºŞ,
-qsquid:S00117«"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úÏº8˜ƒºŞ,
-vsquid:S00117™"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«‡¿ÿÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ìéá½ùÿÿÿÿ8˜ƒºŞ,
+nsquid:CommentedOutCodeLine "<This block of commented-out lines of code should be removed.(Ö’Ã¾ıÿÿÿÿ8üıò¸Ş,
+qsquid:S00117µ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã—Î®8éˆë¹Ş,
+csquid:UnusedPrivateMethodS"7Remove this unused private "getScoreListSecond" method.(×»óƒ8üıò¸Ş,
+vsquid:S00117’"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ÂÂêÿÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117•"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«‡¿ÿÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117ƒ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕÇ…˜úÿÿÿÿ8üıò¸Ş,
+vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ú²šøÿÿÿÿ8˜ƒºŞ,
+esquid:UnusedPrivateMethod|"4Remove this unused private "getListToDouble" method.(‡²Ÿúÿÿÿÿ8üıò¸Ş,
+vsquid:S00117‰"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁÚ·Ûıÿÿÿÿ8²Ëâ¹Ş,
+vsquid:S00117Œ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(óŞÛœûÿÿÿÿ8Äùñ¹Ş,
+vsquid:S00117³"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¢‚ˆ€şÿÿÿÿ8˜ƒºŞ,
+psquid:S00117¦"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’µ\8éˆë¹Ş,
+vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÙÕ´Ÿıÿÿÿÿ8×ç¹Ş,
+vsquid:S00117¤"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(÷¡ÍÃøÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117ÿ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µá¡Úıÿÿÿÿ8üıò¸Ş,
+dsquid:UnusedPrivateMethodj"3Remove this unused private "getListToArray" method.(ÇÛà™øÿÿÿÿ8üıò¸Ş,
+vsquid:S00117Ş"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯…‰ÿÿÿÿÿ8üıò¸Ş,
+vsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å¯İãùÿÿÿÿ8Êƒé¹Ş,
+qsquid:S00117‚"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğõ±Ó8üıò¸Ş,
+qsquid:S00117Å"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆ÷áª8üıò¸Ş,
+vsquid:S00117²"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶œÕ×úÿÿÿÿ8éˆë¹Ş,
+Xsquid:S2864¸"4Iterate over the "entrySet" instead of the "keySet".(ÉÿÙæşÿÿÿÿ8éˆë¹Ş,
+isquid:CommentedOutCodeLine."<This block of commented-out lines of code should be removed.(•ùÒ³8üıò¸Ş,
+vsquid:S00117˜"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«›÷ùùÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117ü"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œ˜â¦úÿÿÿÿ8üıò¸Ş,
+qsquid:S00117§"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úÏº8˜ƒºŞ,
+qsquid:S00117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰’ˆ†8éˆë¹Ş,
+vsquid:S00117Æ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µ…åÈùÿÿÿÿ8üıò¸Ş,
+qsquid:S00117£"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’ø´©8éˆë¹Ş,
+vsquid:S00117¯"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–åü¬úÿÿÿÿ8éˆë¹Ş,
+vsquid:S00117Ç"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùñÉøÿÿÿÿ8üıò¸Ş,
+]squid:UnusedPrivateMethodG"1Remove this unused private "getScoreList" method.(Ñ»‘€8üıò¸Ş,
+nsquid:CommentedOutCodeLine0"<This block of commented-out lines of code should be removed.(®–æøüÿÿÿÿ8üıò¸Ş,
+vsquid:S00117…"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô ä£øÿÿÿÿ8üıò¸Ş,
+vsquid:S00117¬"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒ³±ÿÿÿÿÿ8éˆë¹Ş,
+vsquid:S00117‹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ûÚ©Àúÿÿÿÿ8à‡Ş¹Ş,
+qsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù¢©ï8˜ƒºŞ,
+vsquid:S00117ª"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äôİñşÿÿÿÿ8˜ƒºŞ,
+vsquid:S00117†"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(âÒ¹Éúÿÿÿÿ8üıò¸Ş,
+qsquid:S00117”"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şßä–8×ç¹Ş,
+vsquid:S00117—"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Íƒª‡üÿÿÿÿ8×ç¹Ş,
+qsquid:S00117š"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù¢ğ8Êƒé¹Ş,
+vsquid:S00117›"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŞÀ²ÿÿÿÿÿ8˜ƒºŞ,
+qsquid:S00117ˆ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ó•8Õ×Ö¹Ş,
+qsquid:S00117°"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡û8˜ƒºŞ,
+vsquid:S00117ß"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ç¡·Ãÿÿÿÿÿ8üıò¸Ş,
+qsquid:S00117¡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€¨ò8˜ƒºŞ,
+vsquid:S00117 "QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğÌËïùÿÿÿÿ8Êƒé¹Ş,
+qsquid:S00117‘"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ˜³ı8×ç¹Ş,
+qsquid:S00117€"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôÇ¾8üıò¸Ş,
+\squid:UnusedPrivateMethod_"0Remove this unused private "getTestTime" method.(—÷’×8üıò¸Ş,
+vsquid:S00117¶"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğ®±ˆşÿÿÿÿ8˜ƒºŞ,
+vsquid:S3776¥"RRefactor this method to reduce its Cognitive Complexity from 54 to the 15 allowed.(´—‡×ûÿÿÿÿ8è©Åßß,
+osquid:CommentedOutCodeLineÔ"<This block of commented-out lines of code should be removed.(¢à¿Æüÿÿÿÿ8óÄÏßß,

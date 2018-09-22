@@ -7,13 +7,11 @@ import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.RecursiveAction;
 import java.util.stream.Collectors;
 
 /**
@@ -29,14 +27,14 @@ public class SecondService {
 
     public void firstPart(String schoolId, String gradeId, String classId){
 
-        List<Record> stuId = dao.find(SQL.findStuId(schoolId, gradeId, classId));
+        List<Record> stuId = dao.find(Constant.findStuId(schoolId, gradeId, classId));
         this.getAll(stuId, schoolId, gradeId, classId);
         /*for (Record list : stuId){
             Record firstRecord = new Record();
             *//**第二部分所有成绩集合*//*
-            List<Record> listAll = dao.find(SQL.findSecondPart(schoolId, gradeId, classId, list.getStr("stuId")));
+            List<Record> listAll = dao.find(Constant.findSecondPart(schoolId, gradeId, classId, list.getStr("stuId")));
             *//**第二部分part列表*//*
-            List<Record> listPart = dao.find(SQL.findSecondPartGroupPart(schoolId, gradeId, classId, list.getStr("stuId")));
+            List<Record> listPart = dao.find(Constant.findSecondPartGroupPart(schoolId, gradeId, classId, list.getStr("stuId")));
             *//**该学生原始分数*//*
             List<Record> originalScore = new ArrayList<>();
             for (Record record : listPart){
@@ -171,11 +169,11 @@ public class SecondService {
 
             Record result = new Record();
             /**第二部分某同学所有成绩集合*/
-            List<Record> listAll = dao.find(SQL.findSecondPart(schoolId, gradeId, classId, stu.getStr("stuId")));
+            List<Record> listAll = dao.find(Constant.findSecondPart(schoolId, gradeId, classId, stu.getStr("stuId")));
             /**第二部分part列表*/
-            List<Record> listPart = dao.find(SQL.findSecondPartGroupPart(schoolId, gradeId, classId, stu.getStr("stuId")));
+            List<Record> listPart = dao.find(Constant.findSecondPartGroupPart(schoolId, gradeId, classId, stu.getStr("stuId")));
             /*所有分类提交时间*/
-            List<Record> time = dao.find(SQL.findTestTime(schoolId, gradeId, classId, stu.getStr("stuId")));
+            List<Record> time = dao.find(Constant.findTestTime(schoolId, gradeId, classId, stu.getStr("stuId")));
             /*试卷测试时间*/
             result.set("testDate", time.get(time.size() - 1).getStr("submitTime"));
             /**该学生原始分数*/
@@ -318,26 +316,26 @@ public class SecondService {
                     .set("classId", classId)
                     .set("stuId", key)
                     .set("testDate", n2.get(key).getStr("testDate"))
-                    .set("accuracy", new DecimalFormat("0.00").format((n2.get(key).getDouble("accuracy") - ave_n2) / s * 10 + 50))
-                    .set("tendentiousness", new DecimalFormat("0.00").format((n2.get(key).getDouble("tendentiousness") - ave_tend) / s_tend * 10 + 50))
-                    .set("stability", new DecimalFormat("0.00").format((n2.get(key).getDouble("stability") - ave_stab) / s_stab * 10 + 50))
-                    .set("consistency", new DecimalFormat("0.00").format((n2.get(key).getDouble("consistency") - ave_cons) / s_cons * 10 + 50))
-                    .set("companionT", new DecimalFormat("0.00").format((n2.get(key).getDouble("companionT") - ave_companionT) / s_companionT * 10 + 50))
-                    .set("parenthoodT", new DecimalFormat("0.00").format((n2.get(key).getDouble("parenthoodT") - ave_parenthoodT) / s_parenthoodT * 10 + 50))
-                    .set("tsRelationT", new DecimalFormat("0.00").format((n2.get(key).getDouble("tsRelationT") - ave_tsRelationT) / s_tsRelationT * 10 + 50))
-                    .set("agreeablenessT", new DecimalFormat("0.00").format((n2.get(key).getDouble("agreeablenessT") - ave_agreeablenessT) / s_agreeablenessT * 10 + 50))
-                    .set("resilienceT", new DecimalFormat("0.00").format((n2.get(key).getDouble("resilienceT") - ave_resilienceT) / s_resilienceT * 10 + 50))
-                    .set("selfEsteemT", new DecimalFormat("0.00").format((n2.get(key).getDouble("selfEsteemT") - ave_selfEsteemT) / s_selfEsteemT * 10 + 50))
-                    .set("SelfControllT", new DecimalFormat("0.00").format((n2.get(key).getDouble("SelfControllT") - ave_SelfControllT) / s_SelfControllT * 10 + 50))
-                    .set("learningResponsibilityT", new DecimalFormat("0.00").format((n2.get(key).getDouble("learningResponsibilityT") - ave_learningResponsibilityT) / s_learningResponsibilityT * 10 + 50))
-                    .set("continueTnterestT", new DecimalFormat("0.00").format((n2.get(key).getDouble("continueTnterestT") - ave_continueTnterestT) / s_continueTnterestT * 10 + 50))
-                    .set("continueEffortT", new DecimalFormat("0.00").format((n2.get(key).getDouble("continueEffortT") - ave_continueEffortT) / s_continueEffortT * 10 + 50))
-                    .set("SocialActiveT", new DecimalFormat("0.00").format((n2.get(key).getDouble("SocialActiveT") - ave_SocialActiveT) / s_SocialActiveT * 10 + 50))
-                    .set("situationSelT", new DecimalFormat("0.00").format((n2.get(key).getDouble("situationSelT") - ave_situationSelT) / s_situationSelT * 10 + 50))
-                    .set("situationAdpT", new DecimalFormat("0.00").format((n2.get(key).getDouble("situationAdpT") - ave_situationAdpT) / s_situationAdpT * 10 + 50))
-                    .set("distriOfAttenT", new DecimalFormat("0.00").format((n2.get(key).getDouble("distriOfAttenT") - ave_distriOfAttenT) / s_distriOfAttenT * 10 + 50))
-                    .set("cognitiveChangeT", new DecimalFormat("0.00").format((n2.get(key).getDouble("cognitiveChangeT") - ave_cognitiveChangeT) / s_cognitiveChangeT * 10 + 50))
-                    .set("responseModT", new DecimalFormat("0.00").format((n2.get(key).getDouble("responseModT") - ave_responseModT) / s_responseModT * 10 + 50));
+                    .set("accuracy", s != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("accuracy") - ave_n2) / s * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("tendentiousness", s_tend != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("tendentiousness") - ave_tend) / s_tend * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("stability", s_stab != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("stability") - ave_stab) / s_stab * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("consistency", s_cons != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("consistency") - ave_cons) / s_cons * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("companionT", s_companionT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("companionT") - ave_companionT) / s_companionT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("parenthoodT", s_parenthoodT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("parenthoodT") - ave_parenthoodT) / s_parenthoodT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("tsRelationT", s_tsRelationT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("tsRelationT") - ave_tsRelationT) / s_tsRelationT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("agreeablenessT", s_agreeablenessT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("agreeablenessT") - ave_agreeablenessT) / s_agreeablenessT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("resilienceT", s_resilienceT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("resilienceT") - ave_resilienceT) / s_resilienceT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("selfEsteemT", s_selfEsteemT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("selfEsteemT") - ave_selfEsteemT) / s_selfEsteemT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("SelfControllT", s_SelfControllT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("SelfControllT") - ave_SelfControllT) / s_SelfControllT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("learningResponsibilityT", s_learningResponsibilityT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("learningResponsibilityT") - ave_learningResponsibilityT) / s_learningResponsibilityT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("continueTnterestT", s_continueTnterestT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("continueTnterestT") - ave_continueTnterestT) / s_continueTnterestT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("continueEffortT", s_continueEffortT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("continueEffortT") - ave_continueEffortT) / s_continueEffortT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("SocialActiveT", s_SocialActiveT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("SocialActiveT") - ave_SocialActiveT) / s_SocialActiveT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("situationSelT", s_situationSelT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("situationSelT") - ave_situationSelT) / s_situationSelT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("situationAdpT", s_situationAdpT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("situationAdpT") - ave_situationAdpT) / s_situationAdpT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("distriOfAttenT", s_distriOfAttenT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("distriOfAttenT") - ave_distriOfAttenT) / s_distriOfAttenT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("cognitiveChangeT", s_cognitiveChangeT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("cognitiveChangeT") - ave_cognitiveChangeT) / s_cognitiveChangeT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("responseModT", s_responseModT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("responseModT") - ave_responseModT) / s_responseModT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION);
             dao.saveSecond(score);
             //System.out.println(score);
         }

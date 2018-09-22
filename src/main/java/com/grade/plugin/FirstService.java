@@ -21,20 +21,21 @@ import java.util.stream.Collectors;
  * @Date: Created in 9:00 2018/9/20
  */
 public class FirstService {
+
     private Dao dao = new Dao("first");
     private Subdimension subdimension = new Subdimension();
 
     public void firstPart(String schoolId, String gradeId, String classId){
         /*获取该班级下所有学生id*/
-        List<Record> stuId = dao.find(SQL.findStuId(schoolId, gradeId, classId));
+        List<Record> stuId = dao.find(Constant.findStuId(schoolId, gradeId, classId));
         /*中间结果集*/
         Map<String, Record> temp = new HashMap<>();
         /*最终结果*/
         Record score ;
         for (Record id : stuId){
             Record result = new Record();
-            List<Record> allList = dao.find(SQL.findFirstAll(schoolId, gradeId, classId, id.getStr("stuId")));
-            List<Record> testTime = dao.find(SQL.findTestTime(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> allList = dao.find(Constant.findFirstAll(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> testTime = dao.find(Constant.findTestTime(schoolId, gradeId, classId, id.getStr("stuId")));
 
             result.set("schoolId", schoolId)
                     .set("gradeId", gradeId)
@@ -227,52 +228,44 @@ public class FirstService {
                     .set("idxF", temp.get(key).getStr("idxF"))
                     .set("idxC", temp.get(key).getStr("idxC"))
                     /*维度*/
-                    .set("emotion", new DecimalFormat("0.00").format((temp.get(key).getDouble("emotion") - ave_emo) / s_emo * 10 + 50))
-                    .set("Interpersonal", new DecimalFormat("0.00").format((temp.get(key).getDouble("Interpersonal") - ave_Inter) / s_Inter * 10 + 50))
-                    .set("attention", new DecimalFormat("0.00").format((temp.get(key).getDouble("attention") - ave_atten) / s_atten * 10 + 50))
-                    .set("addiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("addiction") - ave_addict) / s_addict * 10 + 50))
-                    .set("Weariness", new DecimalFormat("0.00").format((temp.get(key).getDouble("Weariness") - ave_Wear) / s_Wear * 10 + 50))
+                    .set("emotion", s_emo != 0 ? new DecimalFormat("0.00").format((temp.get(key).getDouble("emotion") - ave_emo) / s_emo * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("Interpersonal", s_Inter != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("Interpersonal") - ave_Inter) / s_Inter * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("attention", s_atten != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("attention") - ave_atten) / s_atten * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("addiction", s_addict != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("addiction") - ave_addict) / s_addict * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("Weariness", s_Wear != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("Weariness") - ave_Wear) / s_Wear * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
                     /*子维度*/
-                    .set("anxiety", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxiety") - ave_anxiety) / s_anxiety * 10 + 50))
-                    .set("depression", new DecimalFormat("0.00").format((temp.get(key).getDouble("depression") - ave_depression) / s_depression * 10 + 50))
-                    .set("uncontroll", new DecimalFormat("0.00").format((temp.get(key).getDouble("uncontroll") - ave_uncontroll) / s_uncontroll * 10 + 50))
-                    .set("fail", new DecimalFormat("0.00").format((temp.get(key).getDouble("fail") - ave_fail) / s_fail * 10 + 50))
-                    .set("somatization", new DecimalFormat("0.00").format((temp.get(key).getDouble("somatization") - ave_somatization) / s_somatization * 10 + 50))
-                    .set("oddBehav", new DecimalFormat("0.00").format((temp.get(key).getDouble("oddBehav") - ave_oddBehav) / s_oddBehav * 10 + 50))
-                    .set("socialPress", new DecimalFormat("0.00").format((temp.get(key).getDouble("socialPress") - ave_socialPress) / s_socialPress * 10 + 50))
-                    .set("degenerate", new DecimalFormat("0.00").format((temp.get(key).getDouble("degenerate") - ave_degenerate) / s_degenerate * 10 + 50))
-                    .set("bully", new DecimalFormat("0.00").format((temp.get(key).getDouble("bully") - ave_bully) / s_bully * 10 + 50))
-                    .set("inattention", new DecimalFormat("0.00").format((temp.get(key).getDouble("inattention") - ave_inattention) / s_inattention * 10 + 50))
-                    .set("mania", new DecimalFormat("0.00").format((temp.get(key).getDouble("mania") - ave_mania) / s_mania * 10 + 50))
-                    .set("netAddiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("netAddiction") - ave_netAddiction) / s_netAddiction * 10 + 50))
-                    .set("phoneAddiction", new DecimalFormat("0.00").format((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50))
-                    .set("hateSchool", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateSchool") - ave_hateSchool) / s_hateSchool * 10 + 50))
-                    .set("hateTeacher", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateTeacher") - ave_hateTeacher) / s_hateTeacher * 10 + 50))
-                    .set("hateStudy", new DecimalFormat("0.00").format((temp.get(key).getDouble("hateStudy") - ave_hateStudy) / s_hateStudy * 10 + 50))
-                    .set("anxExam", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExam") - ave_anxExam) / s_anxExam * 10 + 50))
+                    .set("anxiety", s_anxiety != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("anxiety") - ave_anxiety) / s_anxiety * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("depression", s_depression != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("depression") - ave_depression) / s_depression * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("uncontroll", s_uncontroll != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("uncontroll") - ave_uncontroll) / s_uncontroll * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("fail", s_fail != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("fail") - ave_fail) / s_fail * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("somatization", s_somatization != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("somatization") - ave_somatization) / s_somatization * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("oddBehav", s_oddBehav != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("oddBehav") - ave_oddBehav) / s_oddBehav * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("socialPress", s_socialPress != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("socialPress") - ave_socialPress) / s_socialPress * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("degenerate", s_degenerate != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("degenerate") - ave_degenerate) / s_degenerate * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("bully", s_bully != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("bully") - ave_bully) / s_bully * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("inattention", s_inattention != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("inattention") - ave_inattention) / s_inattention * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("mania", s_mania != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("mania") - ave_mania) / s_mania * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("netAddiction", s_netAddiction != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("netAddiction") - ave_netAddiction) / s_netAddiction * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("phoneAddiction", s_phoneAddiction != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("hateSchool", s_hateSchool != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("hateSchool") - ave_hateSchool) / s_hateSchool * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("hateTeacher", s_hateTeacher != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("hateTeacher") - ave_hateTeacher) / s_hateTeacher * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("hateStudy", s_hateStudy != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("hateStudy") - ave_hateStudy) / s_hateStudy * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("anxExam", s_anxExam != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExam") - ave_anxExam) / s_anxExam * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
                     /*指数*/
-                    .set("autolesionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("autolesionIdx") - ave_autolesionIdx) / s_autolesionIdx * 10 + 50))
-                    .set("HelplessnessIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("HelplessnessIdx") - ave_HelplessnessIdx) / s_HelplessnessIdx * 10 + 50))
-                    .set("interpersonalIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("interpersonalIdx") - ave_interpersonalIdx) / s_interpersonalIdx * 10 + 50))
-                    .set("addictionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("addictionIdx") - ave_addictionIdx) / s_addictionIdx * 10 + 50))
-                    .set("bullyIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("bullyIdx") - ave_bullyIdx) / s_bullyIdx * 10 + 50))
-                    .set("behavIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("behavIdx") - ave_behavIdx) / s_behavIdx * 10 + 50))
-                    .set("maniaIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("maniaIdx") - ave_maniaIdx) / s_maniaIdx * 10 + 50))
-                    .set("poorHealthIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("poorHealthIdx") - ave_poorHealthIdx) / s_poorHealthIdx * 10 + 50))
-                    .set("WearinessIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("WearinessIdx") - ave_WearinessIdx) / s_WearinessIdx * 10 + 50))
-                    .set("DistractionIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("DistractionIdx") - ave_DistractionIdx) / s_DistractionIdx * 10 + 50))
-                    .set("anxExamIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExamIdx") - ave_anxExamIdx) / s_anxExamIdx * 10 + 50))
-                    .set("conflictIdx", new DecimalFormat("0.00").format((temp.get(key).getDouble("conflictIdx") - ave_conflictIdx) / s_conflictIdx * 10 + 50));
+                    .set("autolesionIdx", s_autolesionIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("autolesionIdx") - ave_autolesionIdx) / s_autolesionIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("HelplessnessIdx", s_HelplessnessIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("HelplessnessIdx") - ave_HelplessnessIdx) / s_HelplessnessIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("interpersonalIdx", s_interpersonalIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("interpersonalIdx") - ave_interpersonalIdx) / s_interpersonalIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("addictionIdx", s_addictionIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("addictionIdx") - ave_addictionIdx) / s_addictionIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("bullyIdx", s_bullyIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("bullyIdx") - ave_bullyIdx) / s_bullyIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("behavIdx", s_behavIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("behavIdx") - ave_behavIdx) / s_behavIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("maniaIdx", s_maniaIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("maniaIdx") - ave_maniaIdx) / s_maniaIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("poorHealthIdx", s_poorHealthIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("poorHealthIdx") - ave_poorHealthIdx) / s_poorHealthIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("WearinessIdx", s_WearinessIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("WearinessIdx") - ave_WearinessIdx) / s_WearinessIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("DistractionIdx", s_DistractionIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("DistractionIdx") - ave_DistractionIdx) / s_DistractionIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("anxExamIdx", s_anxExamIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("anxExamIdx") - ave_anxExamIdx) / s_anxExamIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
+                    .set("conflictIdx", s_conflictIdx != 0 ?new DecimalFormat("0.00").format((temp.get(key).getDouble("conflictIdx") - ave_conflictIdx) / s_conflictIdx * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION);
             dao.save(score);
             //System.out.println(score);
-
-
-            /* System.out.println((temp.get(key).getDouble("phoneAddiction") - ave_phoneAddiction) / s_phoneAddiction * 10 + 50);
-            System.out.println(temp.get(key).getDouble("phoneAddiction"));
-            System.out.println(ave_phoneAddiction);
-            System.out.println(s_phoneAddiction);
-            System.out.println("--------------");*/
-
         }
 
     }
