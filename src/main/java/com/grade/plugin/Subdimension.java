@@ -8,10 +8,7 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.summary.SumOfSquares;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -146,8 +143,8 @@ public class Subdimension {
         int num = 0;
         for (Record ans2 : answerRepeat2){
             for (Record ans1 : answerRepeat1){
-                if (ans2.getStr("question_code").substring(0, ans2.getStr("question_code").lastIndexOf("-"))
-                        .equals(ans1.getStr("question_code").substring(0, ans1.getStr("question_code").lastIndexOf("-")))){
+                if (ans2.getStr("queCode").substring(0, ans2.getStr("queCode").lastIndexOf("-"))
+                        .equals(ans1.getStr("queCode").substring(0, ans1.getStr("queCode").lastIndexOf("-")))){
                     switch (ans2.getStr("option_number")){
                         case "2":
                             if (!ans1.getInt("queAns").equals(ans2.getInt("queAns"))){
@@ -305,6 +302,9 @@ public class Subdimension {
      * @return
      */
     public int[] getSortScore(double[] score){
+       /* for (int i = 0; i < score.length; i++){
+            System.out.println(score[i]);
+        }*/
         int[] result = new int[score.length];
         double[] sort = score;
         List list = new ArrayList();
@@ -357,6 +357,37 @@ public class Subdimension {
     }
 
     /**
+     * 计算矫正分数
+     * @param score
+     * @return
+     */
+    public List<Record> rectifyScoreFinal(List<Record> score){
+
+        List<Record> temp = score.stream()
+                .filter(x -> x.getInt("queSeq") != 0)
+                .collect(Collectors.toList());
+
+        if (!temp.isEmpty()){
+            Map<Integer, List<Record>> value = temp.stream()
+                    .collect(Collectors.groupingBy(x -> x.getInt("queAns")))
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+            for (Integer key : value.keySet()){
+                this.getRectify(value.get(key).size(), value.get(key));
+            }
+            for (int i = 0; i < temp.size(); i++){
+                for (int j = 0; j < score.size(); j++){
+                    if (temp.get(i).getStr("queCode").equals(score.get(i).getStr("queCode"))){
+                        score.get(j).set("queAns", temp.get(i).getInt("queAns"));
+                    }
+                }
+            }
+        }
+        return this.primitive(score);
+    }
+
+    /**
      * 获取矫正分数
      * @param number
      * @param score
@@ -366,32 +397,32 @@ public class Subdimension {
 
         switch (number){
             case 2:
-                score.get(0).set("queAns", score.get(0).getInt("queAns") + 0.25);
-                score.get(1).set("queAns", score.get(1).getInt("queAns") - 0.25);
+                score.get(1).set("queAns", score.get(1).getInt("queAns") + 0.25);
+                score.get(0).set("queAns", score.get(0).getInt("queAns") - 0.25);
                 break;
             case 3:
-                score.get(0).set("queAns", score.get(0).getInt("queAns") + 0.33);
-                score.get(2).set("queAns", score.get(2).getInt("queAns") - 0.33);
+                score.get(2).set("queAns", score.get(2).getInt("queAns") + 0.33);
+                score.get(0).set("queAns", score.get(0).getInt("queAns") - 0.33);
                 break;
             case 4:
-                score.get(0).set("queAns", score.get(0).getInt("queAns") + 0.375);
-                score.get(1).set("queAns", score.get(1).getInt("queAns") + 0.125);
-                score.get(2).set("queAns", score.get(2).getInt("queAns") - 0.125);
-                score.get(3).set("queAns", score.get(3).getInt("queAns") - 0.375);
+                score.get(3).set("queAns", score.get(3).getInt("queAns") + 0.375);
+                score.get(2).set("queAns", score.get(2).getInt("queAns") + 0.125);
+                score.get(1).set("queAns", score.get(1).getInt("queAns") - 0.125);
+                score.get(0).set("queAns", score.get(0).getInt("queAns") - 0.375);
                 break;
             case 5:
-                score.get(0).set("queAns", score.get(0).getInt("queAns") + 0.4);
-                score.get(1).set("queAns", score.get(1).getInt("queAns") + 0.2);
-                score.get(3).set("queAns", score.get(3).getInt("queAns") - 0.2);
-                score.get(4).set("queAns", score.get(4).getInt("queAns") - 0.4);
+                score.get(4).set("queAns", score.get(4).getInt("queAns") + 0.4);
+                score.get(3).set("queAns", score.get(3).getInt("queAns") + 0.2);
+                score.get(1).set("queAns", score.get(1).getInt("queAns") - 0.2);
+                score.get(0).set("queAns", score.get(0).getInt("queAns") - 0.4);
                 break;
             case 6:
-                score.get(0).set("queAns", score.get(0).getInt("queAns") + 0.417);
-                score.get(1).set("queAns", score.get(1).getInt("queAns") + 0.25);
-                score.get(2).set("queAns", score.get(2).getInt("queAns") + 0.08);
-                score.get(3).set("queAns", score.get(3).getInt("queAns") - 0.08);
-                score.get(4).set("queAns", score.get(4).getInt("queAns") - 0.25);
-                score.get(5).set("queAns", score.get(5).getInt("queAns") - 0.417);
+                score.get(5).set("queAns", score.get(5).getInt("queAns") + 0.417);
+                score.get(4).set("queAns", score.get(4).getInt("queAns") + 0.25);
+                score.get(3).set("queAns", score.get(3).getInt("queAns") + 0.08);
+                score.get(2).set("queAns", score.get(2).getInt("queAns") - 0.08);
+                score.get(1).set("queAns", score.get(1).getInt("queAns") - 0.25);
+                score.get(0).set("queAns", score.get(0).getInt("queAns") - 0.417);
                 break;
             default:
                 break;

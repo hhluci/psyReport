@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Dao {
 
-    DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/bank?characterEncoding=utf8&useSSL=false", "root", "root");
+    DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/bank1?characterEncoding=utf8&useSSL=false", "root", "root");
 
 
     public Dao(String configName) {

@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class MainTest {
     @Test
     public void test(){
-        Main.main("1", "2", "1");
+        Main.main("6", "7", "7");
     }
 
 }

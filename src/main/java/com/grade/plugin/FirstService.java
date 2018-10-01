@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +28,15 @@ public class FirstService {
 
     public void firstPart(String schoolId, String gradeId, String classId){
         /*获取该班级下所有学生id*/
-        List<Record> stuId = dao.find(Constant.findStuId(schoolId, gradeId, classId));
+        List<Record> stuId = dao.find(Constant.findStuIdList(schoolId, gradeId, classId));
         /*中间结果集*/
         Map<String, Record> temp = new HashMap<>();
         /*最终结果*/
         Record score ;
         for (Record id : stuId){
             Record result = new Record();
-            List<Record> allList = dao.find(Constant.findFirstAll(schoolId, gradeId, classId, id.getStr("stuId")));
-            List<Record> testTime = dao.find(Constant.findTestTime(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> allList = dao.find(Constant.findStuAns(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> testTime = dao.find(Constant.findFirstTime(schoolId, gradeId, classId, id.getStr("stuId")));
 
             result.set("schoolId", schoolId)
                     .set("gradeId", gradeId)
@@ -48,9 +49,9 @@ public class FirstService {
                     //作答缺失
                     .set("missRate", "0%")
                     //效度分数
-                    .set("idxL", new DecimalFormat("0.00").format(subdimension.getL(this.getScoreList(allList, "30101"))))
-                    .set("idxF", new DecimalFormat("0.00").format(subdimension.getF(this.getScoreList(allList, "30103"))))
-                    .set("idxC", new DecimalFormat("0.00").format(subdimension.getC(this.getScoreList(allList, "30102"), this.getCScoreList(allList))))
+                    .set("idxL", new DecimalFormat("0.00").format(subdimension.getL(this.getScoreList(allList, "10601", "10603"))))
+                    .set("idxF", new DecimalFormat("0.00").format(subdimension.getF(this.getScoreList(allList, "10605"))))
+                    .set("idxC", new DecimalFormat("0.00").format(subdimension.getC(this.getScoreList(allList, "10602", "10604"), this.getCScoreList(allList))))
                     //情绪子维度分数
                     .set("anxiety", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10101")))))
                     .set("depression", Double.parseDouble(new DecimalFormat("0.00").format(subdimension.primitiveScore(this.getScoreList(allList, "10102")))))
@@ -284,15 +285,37 @@ public class FirstService {
     }
 
     /**
+     * 获取第一部分中某子维度集合
+     * @param findAll 第一部分中第一小部分所有成绩
+     * @param scaleTypeCodeFirst  third_scale_type_code子维度编号
+     * @param scaleTypeCodeSecond
+     * @return
+     */
+    private List<Record> getScoreList(List<Record> findAll, String scaleTypeCodeFirst, String scaleTypeCodeSecond){
+
+        List<Record> restult = findAll.stream()
+                .filter(x -> scaleTypeCodeFirst.equals(x.getStr("third_scale_type_code")))
+                //.filter(x -> scaleTypeCodeSecond.equals(x.getStr("third_scale_type_code")))
+                .collect(Collectors.toList());
+
+        List<Record> temp = findAll.stream()
+                //.filter(x -> scaleTypeCodeFirst.equals(x.getStr("third_scale_type_code")))
+                .filter(x -> scaleTypeCodeSecond.equals(x.getStr("third_scale_type_code")))
+                .collect(Collectors.toList());
+        restult.addAll(temp);
+        temp.clear();
+
+        return restult;
+    }
+
+    /**
      * 获取重复题中第一次出现的列表
      * @param findAll
      * @return
      */
     private List<Record> getCScoreList(List<Record> findAll){
         return findAll.stream()
-                .filter(x -> x.getStr("question_code").contains("-1"))
-                .filter(x -> x.getInt("part") == 1)
-                .filter(x -> x.getInt("part") == 2)
+                .filter(x -> x.getStr("queCode").contains("-1"))
                 .collect(Collectors.toList());
     }
 

@@ -27,26 +27,8 @@ public class SecondService {
 
     public void firstPart(String schoolId, String gradeId, String classId){
 
-        List<Record> stuId = dao.find(Constant.findStuId(schoolId, gradeId, classId));
+        List<Record> stuId = dao.find(Constant.findStuIdList(schoolId, gradeId, classId));
         this.getAll(stuId, schoolId, gradeId, classId);
-        /*for (Record list : stuId){
-            Record firstRecord = new Record();
-            *//**第二部分所有成绩集合*//*
-            List<Record> listAll = dao.find(Constant.findSecondPart(schoolId, gradeId, classId, list.getStr("stuId")));
-            *//**第二部分part列表*//*
-            List<Record> listPart = dao.find(Constant.findSecondPartGroupPart(schoolId, gradeId, classId, list.getStr("stuId")));
-            *//**该学生原始分数*//*
-            List<Record> originalScore = new ArrayList<>();
-            for (Record record : listPart){
-                originalScore.addAll(subdimension.rectifyScore(this.getPart(listAll, record.getInt("part"))));
-            }
-            *//*firstRecord.set("schoolId", schoolId)
-                    .set("gradeId", gradeId)
-                    .set("classId", classId)
-                    .set("stuId", list.getStr("stuId"));*//*
-
-            //this.saveN2(this.getSST(originalScore), this.getSSB(originalScore), firstRecord);
-        }*/
 
     }
 
@@ -67,31 +49,31 @@ public class SecondService {
      * @param findAll 矫正后的原始分数
      * @param scaleTypeCode  third_scale_type_code子维度编号
      * @return
-     */
+     *//*
     private List<Record> getScoreList(List<Record> findAll, String scaleTypeCode){
         return findAll.stream()
                 .filter(x -> scaleTypeCode.equals(x.getStr("third_scale_type_code")))
                 .collect(Collectors.toList());
     }
 
-    /**
+    *//**
      * 获取第一部分中某子维度集合
      * @param findAll 矫正后的原始分数
      * @param scaleTypeCode  third_scale_type_code子维度编号
      * @return
-     */
+     *//*
     private List<Record> getScoreListSecond(List<Record> findAll, String scaleTypeCode){
         return findAll.stream()
                 .filter(x -> scaleTypeCode.equals(x.getStr("second_scale_type_code")))
                 .collect(Collectors.toList());
     }
 
-    /**
+    *//**
      * 计算答题时间
      * @param startTime
      * @param endTime
      * @return
-     */
+     *//*
     private String getTestTime(String startTime, String endTime){
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
         DateTime start = dateTimeFormatter.parseDateTime(startTime);
@@ -99,10 +81,10 @@ public class SecondService {
         return String.valueOf(Minutes.minutesBetween(start, end).getMinutes());
     }
 
-    /**
+    *//**
      * 将list转为double数组
      * @return
-     */
+     *//*
     private double[] getListToArray(List<Record> findAll, String scaleTypeCode){
         Integer[] result = findAll.stream()
                 .filter(x -> scaleTypeCode.equals(x.getStr("second_scale_type_code")))
@@ -117,10 +99,10 @@ public class SecondService {
         return array;
     }
 
-    /**
+    *//**
      * 将list转为double数组
      * @return
-     */
+     *//*
     private double[] getListToDouble(List<Record> findAll){
         Integer[] result = findAll.stream()
                 .map(x -> x.get("queAns"))
@@ -132,7 +114,7 @@ public class SecondService {
             array[i] = result[i];
         }
         return array;
-    }
+    }*/
 
     public double getSST(List<Record> list){
         double ave = list.stream()
@@ -179,13 +161,15 @@ public class SecondService {
             /**该学生原始分数*/
             List<Record> originalScore = new ArrayList<>();
             for (Record record : listPart){
-                int[] temp = subdimension.getSortScore(ArrayUtils.toPrimitive(subdimension.rectifyScore(this.getPart(listAll, record.getInt("part"))).stream().map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+                int[] temp = subdimension.getSortScore(ArrayUtils.toPrimitive(subdimension.rectifyScoreFinal(this.getPart(listAll, record.getInt("part"))).stream().map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
                 List<Record> partList = subdimension.rectifyScore(this.getPart(listAll, record.getInt("part")));
+
                 for (int i = 0; i < temp.length; i++){
                     partList.get(i).set("sort", temp[i]);
                 }
                 originalScore.addAll(partList);
             }
+            //System.out.println(originalScore);
 
             if (this.getSST(originalScore) == 0){
                 result.set("accuracy", 0.00);
@@ -210,17 +194,16 @@ public class SecondService {
                         .collect(Collectors.toList())
                         .stream()
                         .collect(Collectors.averagingDouble(x -> x.getDouble("sort")));
-
             }
             result.set("consistency", subdimension.getR(scale_original, scale_sort, 16));
 
             /*每个学生测谎题均分*/
-            result.set("tendentiousness", originalScore.stream().filter(x -> "30101".equals(x.get("third_scale_type_code")))
+            result.set("tendentiousness", originalScore.stream().filter(x -> "20501".equals(x.get("third_scale_type_code")))
                     .collect(Collectors.toList()).stream().collect(Collectors.averagingDouble(x -> x.getDouble("queAns"))));
 
             /*重复题*/
-            double[] replace_a = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("question_code").contains("-1")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
-            double[] replace_b = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("question_code").contains("-2")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
+            double[] replace_a = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("queCode").contains("-1")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
+            double[] replace_b = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("queCode").contains("-2")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
             double rep = 0;
             for (int i = 0; i < replace_a.length; i++){
                 rep += Math.abs(replace_a[i] - replace_b[i]);
@@ -252,7 +235,7 @@ public class SecondService {
         double ave_n2 = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("accuracy")));
         double s = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(n2.values().stream().map(x -> x.getDouble("accuracy")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
         /*评分倾向性*/
-        double ave_tend = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("accuracy")));
+        double ave_tend = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("tendentiousness")));
         double s_tend = subdimension.getStandardDeviation(ArrayUtils.toPrimitive(n2.values().stream().map(x -> x.getDouble("tendentiousness")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
         /*评分一致性*/
         double ave_cons = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("consistency")));

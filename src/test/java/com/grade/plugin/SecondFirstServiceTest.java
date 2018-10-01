@@ -23,7 +23,7 @@ public class SecondFirstServiceTest {
     @Test
     public void firstPart() {
 
-        new SecondService().firstPart("1","2","1");
+        new SecondService().firstPart("6", "7", "7");
         /*double[] a = new double[]{1,2,28,5,1,5,21,5,5,51,5,5,15};
         List<Double> aa = new ArrayList<>();
         for (int i = 0; i< 10; i++){
