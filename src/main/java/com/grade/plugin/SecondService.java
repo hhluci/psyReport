@@ -2,10 +2,6 @@ package com.grade.plugin;
 
 import com.jfinal.plugin.activerecord.Record;
 import org.apache.commons.lang3.ArrayUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Minutes;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,76 +41,16 @@ public class SecondService {
     }
 
     /**
-     * 获取第一部分中某子维度集合
-     * @param findAll 矫正后的原始分数
+     * 获取某子维度集合
+     * @param findAll 第一部分中第一小部分所有成绩
      * @param scaleTypeCode  third_scale_type_code子维度编号
      * @return
-     *//*
+     */
     private List<Record> getScoreList(List<Record> findAll, String scaleTypeCode){
         return findAll.stream()
                 .filter(x -> scaleTypeCode.equals(x.getStr("third_scale_type_code")))
                 .collect(Collectors.toList());
     }
-
-    *//**
-     * 获取第一部分中某子维度集合
-     * @param findAll 矫正后的原始分数
-     * @param scaleTypeCode  third_scale_type_code子维度编号
-     * @return
-     *//*
-    private List<Record> getScoreListSecond(List<Record> findAll, String scaleTypeCode){
-        return findAll.stream()
-                .filter(x -> scaleTypeCode.equals(x.getStr("second_scale_type_code")))
-                .collect(Collectors.toList());
-    }
-
-    *//**
-     * 计算答题时间
-     * @param startTime
-     * @param endTime
-     * @return
-     *//*
-    private String getTestTime(String startTime, String endTime){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        DateTime start = dateTimeFormatter.parseDateTime(startTime);
-        DateTime end = dateTimeFormatter.parseDateTime(endTime);
-        return String.valueOf(Minutes.minutesBetween(start, end).getMinutes());
-    }
-
-    *//**
-     * 将list转为double数组
-     * @return
-     *//*
-    private double[] getListToArray(List<Record> findAll, String scaleTypeCode){
-        Integer[] result = findAll.stream()
-                .filter(x -> scaleTypeCode.equals(x.getStr("second_scale_type_code")))
-                .map(x -> x.get("queAns"))
-                .collect(Collectors.toList())
-                .stream()
-                .toArray(Integer[]::new);
-        double[] array = new double[result.length];
-        for (int i = 0; i < result.length; i++){
-            array[i] = result[i];
-        }
-        return array;
-    }
-
-    *//**
-     * 将list转为double数组
-     * @return
-     *//*
-    private double[] getListToDouble(List<Record> findAll){
-        Integer[] result = findAll.stream()
-                .map(x -> x.get("queAns"))
-                .collect(Collectors.toList())
-                .stream()
-                .toArray(Integer[]::new);
-        double[] array = new double[result.length];
-        for (int i = 0; i < result.length; i++){
-            array[i] = result[i];
-        }
-        return array;
-    }*/
 
     public double getSST(List<Record> list){
         double ave = list.stream()
@@ -158,24 +94,21 @@ public class SecondService {
             List<Record> time = dao.find(Constant.findTestTime(schoolId, gradeId, classId, stu.getStr("stuId")));
             /*试卷测试时间*/
             result.set("testDate", time.get(time.size() - 1).getStr("submitTime"));
+            /**反向计分*/
+            List<Record> reverseScore = subdimension.primitive(listAll);
             /**该学生原始分数*/
             List<Record> originalScore = new ArrayList<>();
             for (Record record : listPart){
-                int[] temp = subdimension.getSortScore(ArrayUtils.toPrimitive(subdimension.rectifyScoreFinal(this.getPart(listAll, record.getInt("part"))).stream().map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
-                List<Record> partList = subdimension.rectifyScore(this.getPart(listAll, record.getInt("part")));
+                int[] temp = subdimension.getSortScore(ArrayUtils.toPrimitive(subdimension.rectifyScoreFinal(this.getPart(reverseScore, record.getInt("part"))).stream().map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
+                List<Record> partList = subdimension.rectifyScoreFinal(this.getPart(reverseScore, record.getInt("part")));
 
                 for (int i = 0; i < temp.length; i++){
                     partList.get(i).set("sort", temp[i]);
                 }
                 originalScore.addAll(partList);
             }
-            //System.out.println(originalScore);
 
-            if (this.getSST(originalScore) == 0){
-                result.set("accuracy", 0.00);
-            }else {
-                result.set("accuracy", this.getSSB(originalScore) / this.getSST(originalScore));
-            }
+            result.set("accuracy", this.getSST(originalScore) != 0 ? this.getSSB(originalScore) / this.getSST(originalScore) : Constant.INVALID_STANDARD_DEVIATION);
 
             /*评分一致性*/
             String[] scale_type = new String[]{"20101","20102","20103","20201","20202","20203","20204","20205","20301","20302","20303","20401","20402","20403","20404","20405"};
@@ -228,8 +161,8 @@ public class SecondService {
                     .set("cognitiveChangeT", originalScore.stream().filter(x -> "20404".equals(x.getStr("third_scale_type_code"))).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().collect(Collectors.averagingDouble(Double::doubleValue)))
                     .set("responseModT", originalScore.stream().filter(x -> "20405".equals(x.getStr("third_scale_type_code"))).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().collect(Collectors.averagingDouble(Double::doubleValue)));
 
-
             n2.put(stu.getStr("stuId") , result);
+           // System.out.println(stu.get(("stuId")) + "--------" + originalScore.stream().filter(x -> "20203".equals(x.get("third_scale_type_code"))).collect(Collectors.toList()) );
         }
         /*评分标准准确性*/
         double ave_n2 = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("accuracy")));
@@ -320,9 +253,7 @@ public class SecondService {
                     .set("cognitiveChangeT", s_cognitiveChangeT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("cognitiveChangeT") - ave_cognitiveChangeT) / s_cognitiveChangeT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION)
                     .set("responseModT", s_responseModT != 0 ? new DecimalFormat("0.00").format((n2.get(key).getDouble("responseModT") - ave_responseModT) / s_responseModT * 10 + 50) : Constant.INVALID_STANDARD_DEVIATION);
             dao.saveSecond(score);
-            //System.out.println(score);
         }
-
     }
 
 

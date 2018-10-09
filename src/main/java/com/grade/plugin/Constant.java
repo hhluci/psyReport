@@ -143,6 +143,20 @@ public class Constant {
                 "          and b.option_number = 2 or b.option_number = 4";
     }
 
+    public static String findStuAns1(String schoolId, String gradeId, String classId, String stuId){
+        return "select distinct\n" +
+                "      a.paperCode,a.schoolId, a.gradeId,a.classId,a.stuId,a.queCode,a.queAns,a.queSeq,a.startTime,a.submitTime,\n" +
+                "       b.option_number,\n" +
+                "       q.mode_code, q.second_scale_type_code, q.third_scale_type_code,q.reverse_scoring,q.part\n" +
+                "from answer a\n" +
+                "    inner join test_table b on a.queCode = b.question_code and a.paperCode = b.EC_code\n" +
+                "    inner join question_bank q on a.queCode = q.question_code and a.stuId = '" + stuId + "'\n" +
+                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
+                "          and a.classId = '" + classId + "'\n" +
+                "          and b.option_number = 2 or b.option_number = 4\n" +
+                ";";
+    }
+
     /**
      * 查询每个班中学生id
      * @param schoolId

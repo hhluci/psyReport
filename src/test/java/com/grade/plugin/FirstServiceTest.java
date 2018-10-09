@@ -28,5 +28,7 @@ public class FirstServiceTest {
         //System.out.println(firstService.getScoreList(all, "10602", "10604").size());
         //System.out.println(all);
         //System.out.println(firstService.getCScoreList(all).size());
+
+
     }
 }

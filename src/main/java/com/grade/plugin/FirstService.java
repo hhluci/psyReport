@@ -8,7 +8,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class FirstService {
         Record score ;
         for (Record id : stuId){
             Record result = new Record();
-            List<Record> allList = dao.find(Constant.findStuAns(schoolId, gradeId, classId, id.getStr("stuId")));
+            List<Record> allList = dao.find(Constant.findStuAns1(schoolId, gradeId, classId, id.getStr("stuId")));
             List<Record> testTime = dao.find(Constant.findFirstTime(schoolId, gradeId, classId, id.getStr("stuId")));
 
             result.set("schoolId", schoolId)

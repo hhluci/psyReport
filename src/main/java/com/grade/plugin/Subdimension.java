@@ -55,10 +55,10 @@ public class Subdimension {
      * @param score
      * @return
      */
-    private List<Record> primitive(List<Record> score){
+    public List<Record> primitive(List<Record> score){
         for (Record record : score){
             if (this.reverseScoring(record.getStr("reverse_scoring"))){
-                record.set("queAns", this.reverseScoring(record.getDouble("queAns"), record.getStr("option_number")));
+                record.set("queAns", this.reverseScoring(record.getInt("queAns"), record.getStr("option_number")));
             }
         }
         return score;
@@ -70,11 +70,9 @@ public class Subdimension {
      * @return
      */
     public double primitiveScore(List<Record> ansSubdimension){
-
         if (ansSubdimension.size() == 0){
             return 0.00;
         }
-
         double sum = 0;
         for (Record ans : ansSubdimension){
             if ("1".equals(ans.getStr("reverse_scoring"))){
@@ -83,7 +81,6 @@ public class Subdimension {
                 sum += ans.getInt("queAns");
             }
         }
-
         return Double.parseDouble(new DecimalFormat("0.00").format(sum / ansSubdimension.size()));
     }
 
@@ -96,7 +93,7 @@ public class Subdimension {
         int num = 0;
         for (Record ans : answer){
             if (!this.reverseScoring(ans.getStr("reverse_scoring"))){
-                if ("2".equals(ans.getStr("option_number")) && ans.getInt("queAns") == 2){
+                if ("2".equals(ans.getStr("option_number")) && ans.getInt("queAns") == 1){
                     num++;
                 }else if ("4".equals(ans.getStr("option_number")) && ans.getInt("queAns") == 4){
                     num++;
@@ -104,8 +101,14 @@ public class Subdimension {
                     num++;
                 }
             }else {
-                if (ans.getInt("queAns") == 1){
-                    num++;
+                if ("2".equals(ans.getStr("option_number"))){
+                    if (ans.getInt("queAns") == 2){
+                        num++;
+                    }
+                }else {
+                    if (ans.getInt("queAns") == 1){
+                        num++;
+                    }
                 }
             }
         }
@@ -302,9 +305,6 @@ public class Subdimension {
      * @return
      */
     public int[] getSortScore(double[] score){
-       /* for (int i = 0; i < score.length; i++){
-            System.out.println(score[i]);
-        }*/
         int[] result = new int[score.length];
         double[] sort = score;
         List list = new ArrayList();
@@ -326,7 +326,6 @@ public class Subdimension {
      * @return
      */
     public double getR(double[] originalScore, double[] sortScore, int number){
-
         double averageOriginal = this.getAverage(originalScore);
         double averageSort = this.getAverage(sortScore);
         double standardOriginal = this.getStandardDeviation(originalScore);
@@ -374,17 +373,12 @@ public class Subdimension {
                     .stream()
                     .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
             for (Integer key : value.keySet()){
-                this.getRectify(value.get(key).size(), value.get(key));
-            }
-            for (int i = 0; i < temp.size(); i++){
-                for (int j = 0; j < score.size(); j++){
-                    if (temp.get(i).getStr("queCode").equals(score.get(i).getStr("queCode"))){
-                        score.get(j).set("queAns", temp.get(i).getInt("queAns"));
-                    }
-                }
+                this.getRec(value.get(key).size(), value.get(key));
+                //temptemp.addAll(this.getRec(value.get(key).size(), value.get(key)));
             }
         }
-        return this.primitive(score);
+        temp = null;
+        return score;
     }
 
     /**
@@ -428,6 +422,75 @@ public class Subdimension {
                 break;
         }
 
+        return score;
+    }
+
+    public List<Record> getRec(int number, List<Record> score){
+        switch (number){
+            case 2:
+                for (Record record : score){
+                    if (record.getInt("queSeq") == 1){
+                        record.set("queAns", record.getDouble("queAns") + 0.25);
+                    }else {
+                        record.set("queAns", record.getDouble("queAns") - 0.25);
+                    }
+                }
+                break;
+            case 3:
+                for (Record record : score){
+                    if (record.getInt("queSeq") == 1){
+                        record.set("queAns", record.getDouble("queAns") + 0.33);
+                    }else if (record.getInt("queSeq") == 3){
+                        record.set("queAns", record.getDouble("queAns") - 0.33);
+                    }
+                }
+                break;
+            case 4:
+                for (Record record : score){
+                    if (record.getInt("queSeq") == 1){
+                        record.set("queAns", record.getDouble("queAns") + 0.375);
+                    }else if (record.getInt("queSeq") == 2){
+                        record.set("queAns", record.getDouble("queAns") + 0.125);
+                    }else if (record.getInt("queSeq") == 3){
+                        record.set("queAns", record.getDouble("queAns") - 0.125);
+                    }else if (record.getInt("queSeq") == 4){
+                        record.set("queAns", record.getDouble("queAns") - 0.375);
+                    }
+                }
+                break;
+            case 5:
+                for (Record record : score) {
+                    if (record.getInt("queSeq") == 1) {
+                        record.set("queAns", record.getDouble("queAns") + 0.4);
+                    } else if (record.getInt("queSeq") == 2) {
+                        record.set("queAns", record.getDouble("queAns") + 0.2);
+                    } else if (record.getInt("queSeq") == 4) {
+                        record.set("queAns", record.getDouble("queAns") - 0.2);
+                    } else if (record.getInt("queSeq") == 5) {
+                        record.set("queAns", record.getDouble("queAns") - 0.4);
+                    }
+                }
+                break;
+            case 6:
+                for (Record record : score) {
+                    if (record.getInt("queSeq") == 1) {
+                        record.set("queAns", record.getDouble("queAns") + 0.417);
+                    } else if (record.getInt("queSeq") == 2) {
+                        record.set("queAns", record.getDouble("queAns") + 0.25);
+                    } else if (record.getInt("queSeq") == 3) {
+                        record.set("queAns", record.getDouble("queAns") + 0.08);
+                    } else if (record.getInt("queSeq") == 4) {
+                        record.set("queAns", record.getDouble("queAns") - 0.08);
+                    } else if (record.getInt("queSeq") == 5) {
+                        record.set("queAns", record.getDouble("queAns") - 0.25);
+                    }else if (record.getInt("queSeq") == 6) {
+                        record.set("queAns", record.getDouble("queAns") - 0.417);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
         return score;
     }
 
