@@ -24,16 +24,13 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.idea/dataSources.local.xml
-.idea/sonarlint/issuestore/0/
-.idea/sonarlint/issuestore/1/a/
-.idea/sonarlint/issuestore/3/0/
-.idea/sonarlint/issuestore/4/9/
-.idea/sonarlint/issuestore/7/2/
-.idea/sonarlint/issuestore/8/
-.idea/sonarlint/issuestore/9/
-.idea/sonarlint/issuestore/a/e/
-.idea/sonarlint/issuestore/b/
-.idea/sonarlint/issuestore/c/
-.idea/workspace.xml
+.idea/
 target/
+grade.iml
+成绩计算.patch
+.idea/sonarlint/issuestore/3/a/3a316c771d135dd8a72a70bc3a5945038cac8547
+.idea/sonarlint/issuestore/3/f/
+.idea/sonarlint/issuestore/4/b/
+.idea/sonarlint/issuestore/5/
+.idea/sonarlint/issuestore/a/5/
+.idea/sonarlint/issuestore/d/
