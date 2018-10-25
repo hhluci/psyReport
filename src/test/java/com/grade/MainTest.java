@@ -21,7 +21,14 @@ import java.util.stream.Collectors;
 public class MainTest {
     @Test
     public void test(){
-        Main.main("6", "7", "7");
+        Main.main("10", "13", "11");
+    }
+
+    @Test
+    public void testSchool(){
+        Dao dao = new Dao("school");
+        List<Record> school = dao.find(Constant.findThisDayTestSchool());
+        System.out.println(school);
     }
 
     @Test

@@ -12,60 +12,6 @@ public class Constant {
     /*当标准差为零时返回结果*/
     public static String INVALID_STANDARD_DEVIATION = "0";
 
-    public static String findAll(String schoolId, String gradeId, String classId, String stuId){
-        return "select distinct\n" +
-                "    a.schoolId, a.gradeId, a.classId, a.stuId, a.queAns, a.queSeq, a.startTime, a.submitTime,\n" +
-                "    b.mode_code, b.second_scale_type_code, b.third_scale_type_code, b.question_code, b.option_number, b.reverse_scoring,\n" +
-                "    e.part\n" +
-                "from answer a\n" +
-                "    inner join question_bank b on a.queCode = b.question_code\n" +
-                "    inner join eva_com_code_table e on a.queCode = e.question_code\n" +
-                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'" +
-                "  and a.classId = '" + classId+ "' and a.stuId = '" + stuId + "'";
-    }
-
-    public static String findFirstAll(String schoolId, String gradeId, String classId, String stuId){
-        return "select distinct\n" +
-                "    a.schoolId, a.gradeId, a.classId, a.stuId, a.queAns, a.queSeq, a.startTime, a.submitTime,a.paperCode,\n" +
-                "    b.mode_code, b.second_scale_type_code, b.third_scale_type_code, b.question_code, b.option_number, b.reverse_scoring,\n" +
-                "    e.part\n" +
-                "from answer a\n" +
-                "   inner join question_bank b on a.queCode = b.question_code\n" +
-                "   inner join eva_com_code_table e on a.queCode = e.question_code\n" +
-                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
-                "  and a.classId = '" + classId + "' and a.stuId = '" + stuId + "'\n" +
-                "  and e.part = 1 or e.part = 2";
-    }
-
-    /**分组查询 通过试卷部分和试卷编号*/
-    public static String findGroupbyPart(String schoolId, String gradeId, String classId, String stuId){
-        return "select distinct\n" +
-                "    a.schoolId, a.gradeId, a.classId, a.stuId, a.queAns, a.queSeq, a.startTime, a.submitTime,a.paperCode,\n" +
-                "    b.mode_code, b.second_scale_type_code, b.third_scale_type_code, b.question_code, b.option_number, b.reverse_scoring,\n" +
-                "    e.part\n" +
-                "from answer a\n" +
-                "   inner join question_bank b on a.queCode = b.question_code\n" +
-                "   inner join eva_com_code_table e on a.queCode = e.question_code\n" +
-                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
-                "  and a.classId = '" + classId + "' and a.stuId = '" + stuId + "'\n" +
-                "group by e.part";
-    }
-
-    public static String findGenerate(String schoolId, String gradeId, String classId){
-        return "select distinct\n" +
-                "    *\n" +
-                "from tbproblembehavrep t\n" +
-                "where t.schoolId = '" + schoolId + "' and t.gradeId = '" + gradeId + "' and t.classId = '" + classId + "'";
-    }
-
-    public static String findId(String schoolId, String gradeId, String classId){
-        return "select distinct\n" +
-                "    id\n" +
-                "from tbproblembehavrep t\n" +
-                "where t.schoolId = '" + schoolId + "' and t.gradeId = '" + gradeId + "' and t.classId = '" + classId + "'" +
-                "group by t.stuId";
-    }
-
     /**
      * 某个同学第二部分所有成绩
      * @param schoolId
@@ -87,16 +33,6 @@ public class Constant {
                 "          and b.option_number = 7";
     }
 
-    public static String findStuId(String schoolId, String gradeId, String classId){
-        return "select distinct\n" +
-                "    a.stuId\n" +
-                "from answer a\n" +
-                "   inner join question_bank b on a.queCode = b.question_code\n" +
-                "   inner join eva_com_code_table e on a.queCode = e.question_code\n" +
-                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
-                "  and a.classId = '" + classId + "'\n" +
-                "group by a.stuId";
-    }
 
     public static String findSecondPartGroupPart(String schoolId, String gradeId, String classId, String stuId){
         return "select\n" +
@@ -192,6 +128,114 @@ public class Constant {
                 "          and a.classId = '" + classId + "' and a.stuId = '" + stuId + "'\n" +
                 "          and b.option_number = 2 or b.option_number = 4\n" +
                 "group by b.option_number";
+    }
+
+    /**
+     * 查询学生完整作答时间
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @param stuId
+     * @return
+     */
+    public static String findStuElapsedTime(String schoolId, String gradeId, String classId, String stuId){
+        return "select\n" +
+                "      MIN(a.startTime) AS 'startTime' ,MAX(a.submitTime) AS 'submitTime'\n" +
+                "from answer a\n" +
+                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
+                "          and a.classId = '" + classId + "'" + "and a.stuId = '" + stuId + "'";
+    }
+
+    /**
+     * 查询当天测试学校编码
+     * @return
+     */
+    public static String findThisDayTestSchool(){
+        return "SELECT\n" +
+                "\ta.schoolId\n" +
+                "FROM\n" +
+                "\tanswer a\n" +
+                "WHERE\n" +
+                "  TO_DAYS(submitTime) = TO_DAYS(NOW())\n" +
+                "GROUP BY schoolId";
+    }
+
+    /**
+     * 查询当天测试的年纪代码
+     * @param schoolId
+     * @return
+     */
+    public static String findThisDayTestGrade(String schoolId){
+        return "SELECT\n" +
+                "\ta.gradeId\n" +
+                "FROM\n" +
+                "\tanswer a\n" +
+                "WHERE\n" +
+                "  TO_DAYS(submitTime) = TO_DAYS(NOW()) AND a.schoolId = '" + schoolId + "'\n" +
+                "GROUP BY gradeId";
+    }
+
+    /**
+     * 查询当天测试的班级代码
+     * @param schoolId
+     * @param gradeId
+     * @return
+     */
+    public static String findThisDayTestClassId(String schoolId, String gradeId){
+        return "SELECT\n" +
+                "\ta.classId\n" +
+                "FROM\n" +
+                "\tanswer a\n" +
+                "WHERE\n" +
+                "  TO_DAYS(submitTime) = TO_DAYS(NOW()) \n" +
+                "  AND a.schoolId = '" + schoolId + "' AND a.gradeId = '" + gradeId + "'\n" +
+                "GROUP BY classId";
+    }
+
+    /**
+     * 查询某个班级学生的问题行为的所有成绩
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findClassActionProblem(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "    *\n" +
+                "from tbproblembehavrep\n" +
+                "where schoolId = '" + schoolId + "' and gradeId = '" + gradeId + "'\n" +
+                "      and classId = '" + classId + "'";
+    }
+
+    /**
+     * 查询某个班级中学生信息
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findClassStudentInfomation(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "    studentNO, name, gender\n" +
+                "from student\n" +
+                "where schoolID = '" + schoolId + "' and gradeID = '" + gradeId + "'\n" +
+                "       and classID = '" + classId + "'";
+    }
+
+    /**
+     * 查询某个班级中学生生日的最大值和最小值
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findClassStudentBirthdayRange(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "    min(birthday) as min ,\n" +
+                "    max(birthday) as max\n" +
+                "from student\n" +
+                "where schoolID = '" + schoolId + "' and gradeID = '" + gradeId + "'\n" +
+                "       and classID = '" + classId + "'";
     }
 
 }

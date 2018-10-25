@@ -58,6 +58,10 @@ public class Dao {
         return Db.save("tbpsyqualityrep", record);
     }
 
+    public boolean saveClassAction(Record record){
+        return Db.save("class_problem_behavior", record);
+    }
+
     public boolean update(String table, String primaryKey, Record date){
         return Db.update(table, primaryKey, date);
     }

@@ -17,7 +17,7 @@ public class FirstServiceTest {
 
     @Test
     public void firstPart() {
-        new FirstService().firstPart("6", "7", "7");
+        new FirstService().firstPart("14", "19", "67");
     }
 
     @Test

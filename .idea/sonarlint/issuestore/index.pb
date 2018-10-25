@@ -34,3 +34,5 @@ U
 %src/test/java/com/grade/MainTest.java,4\b\4b844bd2a37013af8d13d753d545ef1bb1c10687
 d
 4src/test/java/com/grade/plugin/SubdimensionTest.java,3\f\3f006fb8b2f629ba35562909b394be7653c534d5
+`
+0src/main/java/com/grade/plugin/ClassService.java,5\9\5983bac8bd5c551a2d53c29d13c627f371c26b41
