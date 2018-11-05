@@ -30,24 +30,8 @@ public class Dao {
      * @param sql
      * @return
      */
-    public List<Record> find(String sql){
+    public  List<Record> find(String sql){
         return Db.find(sql);
-    }
-
-    /**
-     * 查询数据库模板  只需更改where字段即可
-     * @param sql
-     * @return
-     */
-    public List<Record> findTemplate(String sql){
-        String SQL = "SELECT\n" +
-                "\ta.schoolId, a.gradeId, a.classId, a.stuId, a.queAns, a.queSeq, a.startTime, a.submitTime,\n" +
-                "  b.mode_code, b.third_scale_type_code, b.question_code, b.option_number, b.reverse_scoring\n" +
-                "FROM\n" +
-                "\tanswer a\n" +
-                "JOIN question_bank b ON a.queCode = b.question_code \n" +
-                "WHERE\t";
-        return Db.find(SQL + sql);
     }
 
     public boolean save(Record firstPart){
@@ -60,6 +44,10 @@ public class Dao {
 
     public boolean saveClassAction(Record record){
         return Db.save("class_problem_behavior", record);
+    }
+
+    public boolean saveClassPsychology(Record record){
+        return Db.save("class_positive_psychology", record);
     }
 
     public boolean update(String table, String primaryKey, Record date){

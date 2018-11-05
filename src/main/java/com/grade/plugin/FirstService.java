@@ -4,6 +4,7 @@ import com.jfinal.plugin.activerecord.Record;
 import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
+import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -22,26 +23,29 @@ import java.util.stream.Collectors;
  */
 public class FirstService {
 
-    private Dao dao = new Dao("first");
+    private Dao dao;
     private Subdimension subdimension = new Subdimension();
 
-    public void firstPart(String schoolId, String gradeId, String classId){
+
+    public void firstPart(String schoolId, String gradeId, String classId, Dao dao){
+
+        this.dao = dao;
         /*获取该班级下所有学生id*/
         List<Record> stuId = dao.find(Constant.findStuIdList(schoolId, gradeId, classId));
-        System.out.println(stuId);
         /*中间结果集*/
         Map<String, Record> temp = new HashMap<>();
         for (Record id : stuId){
             Record result = new Record();
             List<Record> allList = dao.find(Constant.findStuAns1(schoolId, gradeId, classId, id.getStr("stuId")));
             List<Record> testTime = dao.find(Constant.findStuElapsedTime(schoolId, gradeId, classId, id.getStr("stuId")));
-            System.out.println(testTime);
+            String test_time = allList.get(0).getStr("startTime");
+
             result.set("schoolId", schoolId)
                     .set("gradeId", gradeId)
                     .set("classId", classId)
                     .set("stuId", id.getStr("stuId"))
                     //问题行为交卷时间
-                    .set("testDate", testTime.get(0).getStr("submitTime"))
+                    .set("testDate", test_time.substring(0, test_time.lastIndexOf(" ")))
                     //作答时间
                     .set("elapsedTime", this.getTestTime(testTime.get(0).getStr("startTime"), testTime.get(0).getStr("submitTime")))
                     //作答缺失
@@ -119,8 +123,6 @@ public class FirstService {
                     temp.put(id.getStr("stuId"), result);
 
         }
-        //System.out.println(temp);
-
 
         /*子维度*/
         double ave_anxiety = temp.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("anxiety")));
@@ -214,9 +216,6 @@ public class FirstService {
                     .set("ave_HelplessnessIdx", Double.parseDouble(new DecimalFormat("0.00").format(this.getAverage(score.getDouble("uncontroll"), score.getDouble("fail")))))
                     .set("ave_interpersonalIdx", Double.parseDouble(new DecimalFormat("0.00").format(this.getAverage(score.getDouble("socialPress"), score.getDouble("degenerate")))))
                     .set("ave_WearinessIdx", Double.parseDouble(new DecimalFormat("0.00").format(this.getAverage(score.getDouble("hateSchool"), score.getDouble("hateStudy")))));
-
-            //dao.save(score);
-            //System.out.println(score);
             startScore.put(key, score);
         }
         this.getFinalScore(startScore);
@@ -308,7 +307,6 @@ public class FirstService {
                             .remove("ave_HelplessnessIdx")
                             .remove("ave_interpersonalIdx")
                             .remove("ave_WearinessIdx");
-
             dao.save(score.get(key));
         }
 
@@ -387,11 +385,11 @@ public class FirstService {
      * @return
      */
     private String getTestTime(String startTime, String endTime){
-        System.out.println(startTime  + "------"+ endTime);
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
         DateTime start = dateTimeFormatter.parseDateTime(startTime);
         DateTime end = dateTimeFormatter.parseDateTime(endTime);
-        return String.valueOf(Minutes.minutesBetween(start, end).getMinutes());
+        return Minutes.minutesBetween(start, end).getMinutes() + " 分" +
+                new Period(start, end).getSeconds() + " 秒";
     }
 
     /**

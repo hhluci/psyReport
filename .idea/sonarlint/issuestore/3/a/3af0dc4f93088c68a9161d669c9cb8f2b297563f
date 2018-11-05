@@ -1,24 +1,23 @@
 
-Wsquid:S1854ü"8Remove this useless assignment to local variable "temp".(œ¯¥³8Ñ®ÂÇå,
-Psquid:S1612ü",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8½öÎ¿å,
+qsquid:S00117ª"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îÑ8ÊÊ†”å,
+vsquid:S00117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤Äñºşÿÿÿÿ8ÊÊ†”å,
+Psquid:S1612û",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8½öÎ¿å,
+Gsquid:S1148Ç"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8ÊÊ†”å,
+~squid:S1488ö"_Immediately return this expression instead of assigning it to the temporary variable "listMap".(â·ÇÄ8½öÎ¿å,
+Psquid:S1612ö",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8ÊÊ†”å,
+Xsquid:S2864à"4Iterate over the "entrySet" instead of the "keySet".(®Çó¨ùÿÿÿÿ8ÊÊ†”å,
+X"squid:SwitchLastCaseIsDefaultCheck—""Add a default case to this switch.(ò˜•8ÊÊ†”å,
 W
 squid:S106ş"9Replace this use of System.out or System.err by a logger.(é“³½8ÊÊ†”å,
-Psquid:S1612ö",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8ÊÊ†”å,
-qsquid:S00117ª"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îÑ8ÊÊ†”å,
-Xsquid:S2864à"4Iterate over the "entrySet" instead of the "keySet".(®Çó¨ùÿÿÿÿ8ÊÊ†”å,
+Wsquid:S1854û"8Remove this useless assignment to local variable "temp".(œ¯¥³8Ñ®ÂÇå,
 Xsquid:S2864÷"4Iterate over the "entrySet" instead of the "keySet".(Ïƒ§üÿÿÿÿ8¡ÄÇå,
-qsquid:S3776¬"RRefactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.(å÷°‘8” ø¿å,
-nsquid:S3027•"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(ßÕ·Œüÿÿÿÿ8ÊÊ†”å,
-vsquid:S00117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤Äñºşÿÿÿÿ8ÊÊ†”å,
-Psquid:S1612ü",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8½öÎ¿å,
-qsquid:S3776‘"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ò”Ù8ÊÊ†”å,
-qsquid:S00117ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾Œ“Í8ÊÊ†”å,
-isquid:S3027–"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(Ú´ƒ¸8ÊÊ†”å,
-\"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(¨àü¿ùÿÿÿÿ8Å™®ÈÜ,
-asquid:S1155I">Use isEmpty() to check whether the collection is empty or not.(´óãƒøÿÿÿÿ8ˆÜ÷Ëİ,
-Gsquid:S1148Ç"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8ÊÊ†”å,
-~squid:S1488÷"_Immediately return this expression instead of assigning it to the temporary variable "listMap".(â·ÇÄ8½öÎ¿å,
-Psquid:S1612ö",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8ÊÊ†”å,
-X"squid:SwitchLastCaseIsDefaultCheck—""Add a default case to this switch.(ò˜•8ÊÊ†”å,
-osquid:CommentedOutCodeLineù"<This block of commented-out lines of code should be removed.(ÒÒêÛûÿÿÿÿ8¡ÄÇå,
 psquid:S3776\"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(åœ“8”¹ƒ”å,
+asquid:S1155I">Use isEmpty() to check whether the collection is empty or not.(´óãƒøÿÿÿÿ8ˆÜ÷Ëİ,
+qsquid:S00117ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾Œ“Í8ÊÊ†”å,
+Psquid:S1612û",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8½öÎ¿å,
+qsquid:S3776‘"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ò”Ù8ÊÊ†”å,
+qsquid:S3776«"RRefactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.(å÷°‘8” ø¿å,
+\"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(¨àü¿ùÿÿÿÿ8Å™®ÈÜ,
+Psquid:S1612ö",Replace this lambda with a method reference.(ùİ·—úÿÿÿÿ8ÊÊ†”å,
+nsquid:S3027•"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(ßÕ·Œüÿÿÿÿ8ÊÊ†”å,
+isquid:S3027–"JPut single-quotes around '-' to use the faster "lastIndexOf(char)" method.(Ú´ƒ¸8ÊÊ†”å,

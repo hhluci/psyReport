@@ -15,16 +15,15 @@ import java.util.stream.Collectors;
  */
 public class ClassActionService {
 
-    final Dao dao = new Dao("ClassActionService");
-
+    private Dao dao ;
     /**
      * 计算班级问题行为报告
      * @param schoolId
      * @param gradeId
      * @param classId
      */
-    public void getClassAction(String schoolId, String gradeId, String classId){
-
+    public void getClassAction(String schoolId, String gradeId, String classId, Dao settingDao){
+        this.dao = settingDao;
         /*该班级中所有学生问题行为成绩*/
         List<Record> allStuActionProblem = dao.find(Constant.findClassActionProblem(schoolId, gradeId, classId));
         /*该班级所有学生信息*/
@@ -37,12 +36,11 @@ public class ClassActionService {
         /*班级总人数*/
         int sumStu = allStuInfo.size();
         /*答题人数中男生人数*/
-        long numSexMan = allStuInfo.stream().filter(x -> "男".equals(x.getStr("gender"))).count();
+        long numSexMan = dao.find(Constant.findTestStuSexManNum(schoolId, gradeId, classId)).get(0).getLong("man");
         /*答题人数中女生人数*/
-        long numSexWoman = allStuInfo.stream().filter(x -> "女".equals(x.getStr("gender"))).count();
+        long numSexWoman = dao.find(Constant.findTestStuSexWomanNum(schoolId, gradeId, classId)).get(0).getLong("woman");
         /*测试时间*/
-        String testTime = allStuActionProblem.get(0).getStr("testDate").substring(0, allStuActionProblem.get(0)
-                .getStr("testDate").lastIndexOf(" "));
+        String testTime = allStuActionProblem.get(0).getStr("testDate");
         /**作答缺失*/
         /*作答缺失人数*/
         long deletionNum = allStuActionProblem.stream().filter(x -> compareTo(x.getStr("missRate"))).count();
@@ -497,6 +495,7 @@ public class ClassActionService {
         result.set("school_id", schoolId)
                 .set("grade_id", gradeId)
                 .set("class_id", classId)
+                .set("test_stu_num", testStu)
                 .set("test_stu_percent", testStu + ":" + sumStu)
                 .set("stu_sex_percent", numSexMan + ":" + numSexWoman)
                 .set("stu_birthday_rang", allStuBirthdayRange.get(0).getStr("min").substring(0,4) + "-" + allStuBirthdayRange.get(0).getStr("max").substring(0,4))
@@ -716,7 +715,10 @@ public class ClassActionService {
      * @return
      */
     private boolean compareForTestTime(String time){
-        return Integer.parseInt(time) * 60 < 450;
+        Integer min = Integer.parseInt(time.substring(0, time.lastIndexOf(" 分")));
+        Integer sec = Integer.parseInt(time.substring(time.indexOf("分") + 1, time.lastIndexOf(" 秒")));
+        //return Integer.parseInt(time) * 60 < 450;
+        return min * 60 + sec < 450;
     }
 
     /**

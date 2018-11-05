@@ -24,31 +24,31 @@ public class ClassActionServiceTest {
 
     @Test
     public void getClassAction() {
-        new ClassActionService().getClassAction("14", "19", "67");
+        //new ClassActionService().getClassAction("15", "25", "168");
     }
 
     @Test
     public void testDao(){
-        List<Record> promble = dao.find(Constant.findClassActionProblem("14", "19", "67"));
+        //List<Record> promble = dao.find(Constant.findClassActionProblem("14", "19", "67"));
         //System.out.println(dao.find(Constant.findClassActionProblem("14", "19", "67")).size());
         //System.out.println(dao.find(Constant.findClassStudentInfomation("14", "19", "67")).size());
         //System.out.println(dao.find(Constant.findClassStudentBirthdayRange("14", "19", "67")).size());
-        List<Record> allStuBirthdayRange = dao.find(Constant.findClassStudentBirthdayRange("14", "19", "67"));
+        //List<Record> allStuBirthdayRange = dao.find(Constant.findClassStudentBirthdayRange("14", "19", "67"));
 
-        long count = dao.find(Constant.findClassStudentInfomation("14", "19", "67")).stream()
-                .filter(x -> "男".equals(x.getStr("gender"))).count();
+        //long count = dao.find(Constant.findClassStudentInfomation("14", "19", "67")).stream()
+                //.filter(x -> "男".equals(x.getStr("gender"))).count();
 
-        String testDate = promble.get(0).getStr("testDate").substring(0, promble.get(0).getStr("testDate").lastIndexOf(" "));
+        //String testDate = promble.get(0).getStr("testDate").substring(0, promble.get(0).getStr("testDate").lastIndexOf(" "));
 
-        long deletionCount = promble.stream().filter(x -> compareTo(x.getStr("missRate"))).count();
+        //long deletionCount = promble.stream().filter(x -> compareTo(x.getStr("missRate"))).count();
 
-        List<String> missRateList = promble.stream().filter(x -> !compareTo(x.getStr("missRate"))).map(x -> x.getStr("stuId")).collect(Collectors.toList());
+        //List<String> missRateList = promble.stream().filter(x -> !compareTo(x.getStr("missRate"))).map(x -> x.getStr("stuId")).collect(Collectors.toList());
 
-        long testTime = promble.stream().filter(x -> compareForTestTime(x.getStr("elapsedTime"))).count();
+        //long testTime = promble.stream().filter(x -> compareForTestTime(x.getStr("elapsedTime"))).count();
 
-        long L = promble.stream().filter(x -> compareForL(x.getStr("idxL"))).count();
+        //long L = promble.stream().filter(x -> compareForL(x.getStr("idxL"))).count();
 
-        System.out.println(allStuBirthdayRange.get(0).getStr("min").substring(0,4) + "-" + allStuBirthdayRange.get(0).getStr("max").substring(0,4));
+       // System.out.println(allStuBirthdayRange.get(0).getStr("min").substring(0,4) + "-" + allStuBirthdayRange.get(0).getStr("max").substring(0,4));
 
 
 

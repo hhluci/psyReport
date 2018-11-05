@@ -1,0 +1,50 @@
+{
+  "model": 6,
+  "date": [
+    {
+      "schoolId": "15",
+      "gradeId": "25",
+      "classId": "206"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "25",
+      "classId": "168"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "22",
+      "classId": "120"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "22",
+      "classId": "121"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "22",
+      "classId": "122"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "22",
+      "classId": "123"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "23",
+      "classId": "124"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "23",
+      "classId": "125"
+    },
+    {
+      "schoolId": "15",
+      "gradeId": "23",
+      "classId": "126"
+    }
+  ]
+}

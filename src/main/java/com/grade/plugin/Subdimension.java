@@ -29,13 +29,13 @@ public class Subdimension {
     private double reverseScoring(double queAns, String optionNumber){
         switch (optionNumber){
             case "2":
-                queAns = 3 - queAns;
+                queAns = 3.00 - queAns;
                 break;
             case "4":
-                queAns = 5 - queAns;
+                queAns = 5.00 - queAns;
                 break;
             case "7":
-                queAns = 8 - queAns;
+                queAns = 8.00 - queAns;
                 break;
         }
         return queAns;
@@ -58,7 +58,7 @@ public class Subdimension {
     public List<Record> primitive(List<Record> score){
         for (Record record : score){
             if (this.reverseScoring(record.getStr("reverse_scoring"))){
-                record.set("queAns", this.reverseScoring(record.getInt("queAns"), record.getStr("option_number")));
+                record.set("queAns", this.reverseScoring(record.getDouble("queAns"), record.getStr("option_number")));
             }
         }
         return score;
@@ -374,7 +374,6 @@ public class Subdimension {
                     .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
             for (Integer key : value.keySet()){
                 this.getRec(value.get(key).size(), value.get(key));
-                //temptemp.addAll(this.getRec(value.get(key).size(), value.get(key)));
             }
         }
         temp = null;

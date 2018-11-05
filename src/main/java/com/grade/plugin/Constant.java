@@ -142,6 +142,8 @@ public class Constant {
         return "select\n" +
                 "      MIN(a.startTime) AS 'startTime' ,MAX(a.submitTime) AS 'submitTime'\n" +
                 "from answer a\n" +
+                "join test_table b on a.queCode = b.question_code and a.paperCode = b.EC_code\n" +
+                "                            and b.option_number != '7'\n"+
                 "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "'\n" +
                 "          and a.classId = '" + classId + "'" + "and a.stuId = '" + stuId + "'";
     }
@@ -236,6 +238,53 @@ public class Constant {
                 "from student\n" +
                 "where schoolID = '" + schoolId + "' and gradeID = '" + gradeId + "'\n" +
                 "       and classID = '" + classId + "'";
+    }
+
+    /**
+     * 查询某个班所有学生积极心理品质成绩
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findClassPsychology(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "  *\n" +
+                "from tbpsyqualityrep\n" +
+                "where schoolId = '" + schoolId + "' and gradeId = '" + gradeId + "'\n" +
+                "  and classId = '" + classId + "'";
+    }
+
+    /**
+     * 查询某个班级参加考试中男生人数
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findTestStuSexManNum(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "    count(gender) as man\n" +
+                "from tbproblembehavrep a\n" +
+                "    inner join student b on a.stuId = b.studentNO\n" +
+                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "' and a.classId = '" + classId + "'\n" +
+                "       and b.gender = '男'";
+    }
+
+    /**
+     * 查询某个班级参加考试中女生人数
+     * @param schoolId
+     * @param gradeId
+     * @param classId
+     * @return
+     */
+    public static String findTestStuSexWomanNum(String schoolId, String gradeId, String classId){
+        return "select\n" +
+                "    count(gender) as woman\n" +
+                "from tbproblembehavrep a\n" +
+                "    inner join student b on a.stuId = b.studentNO\n" +
+                "where a.schoolId = '" + schoolId + "' and a.gradeId = '" + gradeId + "' and a.classId = '" + classId + "'\n" +
+                "       and b.gender = '女'";
     }
 
 }

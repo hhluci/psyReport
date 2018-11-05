@@ -4,10 +4,7 @@ import com.jfinal.plugin.activerecord.Record;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -18,11 +15,11 @@ import java.util.stream.Collectors;
  * @Date: Created in 8:50 2018/9/15
  */
 public class SecondService {
-    final Dao dao = new Dao("second");
+    private Dao dao;
     final Subdimension subdimension = new Subdimension();
 
-    public void firstPart(String schoolId, String gradeId, String classId){
-
+    public void firstPart(String schoolId, String gradeId, String classId, Dao dao){
+        this.dao = dao;
         List<Record> stuId = dao.find(Constant.findStuIdList(schoolId, gradeId, classId));
         this.getAll(stuId, schoolId, gradeId, classId);
 
@@ -53,31 +50,39 @@ public class SecondService {
     }
 
     public double getSST(List<Record> list){
-        double ave = list.stream()
-                .collect(Collectors.averagingDouble(x -> x.getInt("queAns")));
+        List<Record> real = list.stream()
+                .filter(x -> !"20500".equals(x.getStr("second_scale_type_code")))
+                .collect(Collectors.toList());
+
+        double ave = real.stream()
+                .collect(Collectors.averagingDouble(x -> x.getDouble("queAns")));
         double result = 0.00;
-        for (Record record : list){
-            result += Math.pow(record.getInt("queAns") - ave, 2);
+        for (Record record : real){
+            result += Math.pow(record.getDouble("queAns") - ave, 2);
         }
-        return result;
+        return Double.parseDouble(new DecimalFormat("0.00").format(result));
     }
 
     private double getSSB(List<Record> list){
         double result = 0.00;
-        double ave = list.stream()
-                .collect(Collectors.averagingDouble(x -> x.getInt("queAns")));
+        List<Record> real = list.stream()
+                .filter(x -> !"20500".equals(x.getStr("second_scale_type_code")))
+                .collect(Collectors.toList());
+        double ave = real.stream()
+                .collect(Collectors.averagingDouble(x -> x.getDouble("queAns")));
+
         String[] model = new String[]{"20100", "20200", "20300", "20400"};
         for (int i = 0; i < 4; i++){
             String mo = model[i];
             double mondel = list.stream()
                     .filter(x -> mo.equals(x.getStr("second_scale_type_code")))
-                    .collect(Collectors.averagingDouble(x -> x.getInt("queAns")));
+                    .collect(Collectors.averagingDouble(x -> x.getDouble("queAns")));
             double num = list.stream()
                     .filter(x -> mo.equals(x.getStr("second_scale_type_code")))
                     .count();
-            result += num * Math.pow(mondel - ave, 2);
+            result += num * Math.pow(Double.parseDouble(new DecimalFormat("0.00").format(mondel)) - Double.parseDouble(new DecimalFormat("0.00").format(ave)), 2);
         }
-       return result;
+       return Double.parseDouble(new DecimalFormat("0.00").format(result));
     }
 
     public void getAll(List<Record> stuId, String schoolId, String gradeId, String classId ){
@@ -90,24 +95,20 @@ public class SecondService {
             List<Record> listAll = dao.find(Constant.findSecondPart(schoolId, gradeId, classId, stu.getStr("stuId")));
             /**第二部分part列表*/
             List<Record> listPart = dao.find(Constant.findSecondPartGroupPart(schoolId, gradeId, classId, stu.getStr("stuId")));
-            /*所有分类提交时间*/
-            List<Record> time = dao.find(Constant.findTestTime(schoolId, gradeId, classId, stu.getStr("stuId")));
             /*试卷测试时间*/
-            result.set("testDate", time.get(time.size() - 1).getStr("submitTime"));
-            /**反向计分*/
-            List<Record> reverseScore = subdimension.primitive(listAll);
+            result.set("testDate", listAll.get(0).getStr("startTime"));
             /**该学生原始分数*/
             List<Record> originalScore = new ArrayList<>();
             for (Record record : listPart){
-                int[] temp = subdimension.getSortScore(ArrayUtils.toPrimitive(subdimension.rectifyScoreFinal(this.getPart(reverseScore, record.getInt("part"))).stream().map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new)));
-                List<Record> partList = subdimension.rectifyScoreFinal(this.getPart(reverseScore, record.getInt("part")));
-
-                for (int i = 0; i < temp.length; i++){
-                    partList.get(i).set("sort", temp[i]);
+                /*对最初分数进行分组进行矫正后反向计分*/
+                List<Record> temp = subdimension.primitive(subdimension.rectifyScoreFinal(this.getPart(listAll, record.getInt("part"))));
+                List<Record> partList = temp.stream().sorted(Comparator.comparingDouble(x -> x.getDouble("queAns"))).collect(Collectors.toList());
+                for (int i = 1; i <= partList.size(); i++){
+                    partList.get(i - 1).set("sort", i);
                 }
                 originalScore.addAll(partList);
             }
-
+            /*评分准确性*/
             result.set("accuracy", this.getSST(originalScore) != 0 ? this.getSSB(originalScore) / this.getSST(originalScore) : Constant.INVALID_STANDARD_DEVIATION);
 
             /*评分一致性*/
@@ -135,11 +136,17 @@ public class SecondService {
                     .collect(Collectors.toList()).stream().collect(Collectors.averagingDouble(x -> x.getDouble("queAns"))));
 
             /*重复题*/
-            double[] replace_a = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("queCode").contains("-1")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
-            double[] replace_b = ArrayUtils.toPrimitive(originalScore.stream().filter(x -> x.getStr("queCode").contains("-2")).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().toArray(Double[]::new));
-            double rep = 0;
-            for (int i = 0; i < replace_a.length; i++){
-                rep += Math.abs(replace_a[i] - replace_b[i]);
+            List<Record> replace_a = originalScore.stream().filter(x -> x.getStr("queCode").contains("-1")).collect(Collectors.toList());
+            List<Record> replace_b = originalScore.stream().filter(x -> x.getStr("queCode").contains("-2")).collect(Collectors.toList());
+            double rep = 0.00;
+            for (int i = 0; i < replace_a.size(); i++){
+                for (int j = 0; j < replace_b.size(); j++){
+                    String rep_a = replace_a.get(i).getStr("queCode");
+                    String rep_b = replace_b.get(j).getStr("queCode");
+                    if (rep_a.substring(0, rep_a.lastIndexOf("-")).equals(rep_b.substring(0, rep_b.lastIndexOf("-")))){
+                        rep += Math.abs(replace_a.get(i).getDouble("queAns") - replace_b.get(j).getDouble("queAns"));
+                    }
+                }
             }
             result.set("stability", rep);
 
@@ -162,7 +169,6 @@ public class SecondService {
                     .set("responseModT", originalScore.stream().filter(x -> "20405".equals(x.getStr("third_scale_type_code"))).map(x -> x.getDouble("queAns")).collect(Collectors.toList()).stream().collect(Collectors.averagingDouble(Double::doubleValue)));
 
             n2.put(stu.getStr("stuId") , result);
-           // System.out.println(stu.get(("stuId")) + "--------" + originalScore.stream().filter(x -> "20203".equals(x.get("third_scale_type_code"))).collect(Collectors.toList()) );
         }
         /*评分标准准确性*/
         double ave_n2 = n2.values().stream().collect(Collectors.averagingDouble(x -> x.getDouble("accuracy")));

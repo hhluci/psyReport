@@ -3,8 +3,11 @@ package com.grade.plugin;
 import com.jfinal.plugin.activerecord.Record;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.RecursiveAction;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -41,6 +44,24 @@ public class SubdimensionTest {
         //System.out.println(subdimension.rectifyScoreFinal(temp).size());
         double[] temp = new double[]{4.78, 4.06};
         System.out.println(subdimension.getStandardDeviation(temp));
+    }
+
+    @Test
+    public void compare(){
+        Record record = new Record().set("id", 1).set("name", "12");
+        Record record1 = new Record().set("id", 2).set("name", "12");
+        Record record2 = new Record().set("id", 3).set("name", "12");
+        Record record3 = new Record().set("id", 4).set("name", "12");
+        List<Record> records = new ArrayList<>();
+        records.add(record);
+        records.add(record3);
+        records.add(record1);
+        records.add(record2);
+
+
+
+        System.out.println(records.stream().filter(x -> "11".equals(x.getStr("name"))).collect(Collectors.toList()));
+        //System.out.println(records.stream().sorted(Comparator.comparingInt(x -> x.getInt("id"))).collect(Collectors.toList()));
     }
 
 }
