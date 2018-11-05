@@ -38,7 +38,7 @@ public class Main {
     private static ExecutorService mFixedThreadPool= new ThreadPoolExecutor(5, 200,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(1024), new ThreadPoolExecutor.AbortPolicy());
-    
+
     public static void main(String[] args){
         /*提取出数据库配置文件，防止出现配置文件争夺的空指针错误*/
         Dao dao = new Dao("mainDao");
@@ -85,6 +85,8 @@ public class Main {
                     mFixedThreadPool.execute(() -> new ClassActionService().getClassAction(bean.getSchoolId(), bean.getGradeId(), bean.getClassId(), dao));
                     mFixedThreadPool.execute(() -> new ClassPositivePsychology().getClassPsychology(bean.getSchoolId(), bean.getGradeId(), bean.getClassId(), dao));
                 }
+                break;
+            default:
                 break;
         }
         //顺序关闭一次线程，执行未完成的线程，不接受新的任务
